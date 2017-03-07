@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit http://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <_PublishTargetUrl>E:\GULAM_Work\SmartServiceweb\PublishSmartwebSvc</_PublishTargetUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="bin/EntityFramework.dll">
+      <publishTime>03/07/2017 22:26:04</publishTime>
+    </File>
+    <File Include="bin/EntityFramework.SqlServer.dll">
+      <publishTime>03/07/2017 22:26:05</publishTime>
+    </File>
+    <File Include="bin/SmartServiceweb.dll">
+      <publishTime>03/08/2017 00:42:54</publishTime>
+    </File>
+    <File Include="Global.asax">
+      <publishTime>03/07/2017 23:38:24</publishTime>
+    </File>
+    <File Include="Model/GmModel.edmx.diagram">
+      <publishTime>03/07/2017 22:55:51</publishTime>
+    </File>
+    <File Include="packages.config">
+      <publishTime>03/07/2017 22:26:21</publishTime>
+    </File>
+    <File Include="PicBlog.ashx">
+      <publishTime>03/08/2017 00:35:24</publishTime>
+    </File>
+    <File Include="PicUpload.ashx">
+      <publishTime>03/08/2017 00:35:41</publishTime>
+    </File>
+    <File Include="Service.svc">
+      <publishTime>03/07/2017 22:37:01</publishTime>
+    </File>
+    <File Include="Uploads/ProfilePic/1477650245606.jpg">
+      <publishTime>12/24/2016 21:42:43</publishTime>
+    </File>
+    <File Include="Uploads/ProfilePic/1478073665129.jpg">
+      <publishTime>12/24/2016 21:42:43</publishTime>
+    </File>
+    <File Include="Uploads/ProfilePic/89b6394b-6899-40a3-8fbf-6bb85617dcb4IMG_20161008_132103.jpg">
+      <publishTime>12/24/2016 21:42:43</publishTime>
+    </File>
+    <File Include="Uploads/ProfilePic/8df51f68-c65f-4433-8dc4-05ea3456fe9bdefault-User.png">
+      <publishTime>12/24/2016 21:42:43</publishTime>
+    </File>
+    <File Include="Uploads/ProfilePic/default-User.png">
+      <publishTime>12/24/2016 21:42:44</publishTime>
+    </File>
+    <File Include="Uploads/ProfilePic/DSC_2543.JPG">
+      <publishTime>12/24/2016 21:42:44</publishTime>
+    </File>
+    <File Include="Uploads/ProfilePic/FghhIMG_20161010_113033.jpg">
+      <publishTime>12/24/2016 21:42:44</publishTime>
+    </File>
+    <File Include="Uploads/ProfilePic/GhhIMG_20161010_112822.jpg">
+      <publishTime>12/24/2016 21:42:44</publishTime>
+    </File>
+    <File Include="Uploads/ProfilePic/gulfstream-5.jpg">
+      <publishTime>12/24/2016 21:42:44</publishTime>
+    </File>
+    <File Include="Uploads/ProfilePic/HelloIMG_20161010_112822.jpg">
+      <publishTime>12/24/2016 21:42:44</publishTime>
+    </File>
+    <File Include="Uploads/ProfilePic/IMG-20161102-WA0006.jpg">
+      <publishTime>12/24/2016 21:42:44</publishTime>
+    </File>
+    <File Include="Uploads/ProfilePic/IMG-20161102-WA0007.jpg">
+      <publishTime>12/24/2016 21:42:44</publishTime>
+    </File>
+    <File Include="Uploads/ProfilePic/IMG-20161102-WA0008.jpg">
+      <publishTime>12/24/2016 21:42:44</publishTime>
+    </File>
+    <File Include="Uploads/ProfilePic/IMG-20161102-WA0010.jpg">
+      <publishTime>12/24/2016 21:42:44</publishTime>
+    </File>
+    <File Include="Uploads/ProfilePic/IMG_20160920_125252.jpg">
+      <publishTime>12/24/2016 21:42:44</publishTime>
+    </File>
+    <File Include="Uploads/ProfilePic/IMG_20160923_221438.jpg">
+      <publishTime>12/24/2016 21:42:44</publishTime>
+    </File>
+    <File Include="Uploads/ProfilePic/IMG_20160923_221453.jpg">
+      <publishTime>12/24/2016 21:42:44</publishTime>
+    </File>
+    <File Include="Uploads/ProfilePic/IMG_20160923_221457.jpg">
+      <publishTime>12/24/2016 21:42:44</publishTime>
+    </File>
+    <File Include="Uploads/ProfilePic/IMG_20160924_114944.jpg">
+      <publishTime>12/24/2016 21:42:44</publishTime>
+    </File>
+    <File Include="Uploads/ProfilePic/IMG_20160926_111254.jpg">
+      <publishTime>12/24/2016 21:42:44</publishTime>
+    </File>
+    <File Include="Uploads/ProfilePic/IMG_20161002_192643.jpg">
+      <publishTime>12/24/2016 21:42:44</publishTime>
+    </File>
+    <File Include="Uploads/ProfilePic/IMG_20161008_132103.jpg">
+      <publishTime>12/24/2016 21:42:44</publishTime>
+    </File>
+    <File Include="Uploads/ProfilePic/IMG_20161008_132108.jpg">
+      <publishTime>12/24/2016 21:42:44</publishTime>
+    </File>
+    <File Include="Uploads/ProfilePic/IMG_20161010_112816.jpg">
+      <publishTime>12/24/2016 21:42:44</publishTime>
+    </File>
+    <File Include="Uploads/ProfilePic/IMG_20161010_112822.jpg">
+      <publishTime>12/24/2016 21:42:44</publishTime>
+    </File>
+    <File Include="Uploads/ProfilePic/IMG_20161010_113033.jpg">
+      <publishTime>12/24/2016 21:42:44</publishTime>
+    </File>
+    <File Include="Uploads/ProfilePic/mapPointers.png">
+      <publishTime>12/24/2016 21:42:44</publishTime>
+    </File>
+    <File Include="Uploads/ProfilePic/MapSpafoo.png">
+      <publishTime>12/24/2016 21:42:44</publishTime>
+    </File>
+    <File Include="Uploads/ProfilePic/SachinIMG_20161010_112822.jpg">
+      <publishTime>12/24/2016 21:42:44</publishTime>
+    </File>
+    <File Include="Uploads/ProfilePic/Screenshot_2016-10-28-15-08-44.png">
+      <publishTime>12/24/2016 21:42:44</publishTime>
+    </File>
+    <File Include="Uploads/ProfilePic/VgvsIMG_20161010_112816.jpg">
+      <publishTime>12/24/2016 21:42:44</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>03/08/2017 00:42:56</publishTime>
+    </File>
+  </ItemGroup>
+</Project>
