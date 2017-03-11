@@ -66,7 +66,29 @@ namespace SmartServiceweb.Model
             public byte[] FileName { get; set; }
             [DataMember]           
             public string FilePathName { get; set; }
+        
+        
         }
 
- 
+    [DataContract]
+    public class UserDataRegister
+    {
+        [DataMember]
+        public string FilePathName{ get; set; }
+        [DataMember]
+        public string FirstName { get; set; }
+        [DataMember]
+        public string LastName { get; set; }
+        [DataMember]
+        public string Email { get; set; }
+        [DataMember]
+        public string Mobile { get; set; }
+        [DataMember]
+        public string UserName { get; set; }
+        [DataMember]
+        public int RegistrationID { get; set; }
+
+
+
+    }
 }

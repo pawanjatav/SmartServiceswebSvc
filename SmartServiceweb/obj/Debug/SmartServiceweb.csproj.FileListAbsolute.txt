@@ -17,3 +17,13 @@ E:\GULAM_Work\SmartServiceswebSvc\SmartServiceweb\bin\EntityFramework.SqlServer.
 E:\GULAM_Work\SmartServiceswebSvc\SmartServiceweb\obj\Debug\SmartServiceweb.csprojResolveAssemblyReference.cache
 E:\GULAM_Work\SmartServiceswebSvc\SmartServiceweb\obj\Debug\SmartServiceweb.dll
 E:\GULAM_Work\SmartServiceswebSvc\SmartServiceweb\obj\Debug\SmartServiceweb.pdb
+D:\mobileapps\gmcscoservices_git\SmartServiceweb\SmartServiceweb\bin\SmartServiceweb.dll.config
+D:\mobileapps\gmcscoservices_git\SmartServiceweb\SmartServiceweb\bin\SmartServiceweb.dll
+D:\mobileapps\gmcscoservices_git\SmartServiceweb\SmartServiceweb\bin\SmartServiceweb.pdb
+D:\mobileapps\gmcscoservices_git\SmartServiceweb\SmartServiceweb\bin\EntityFramework.dll
+D:\mobileapps\gmcscoservices_git\SmartServiceweb\SmartServiceweb\bin\EntityFramework.SqlServer.dll
+D:\mobileapps\gmcscoservices_git\SmartServiceweb\SmartServiceweb\bin\EntityFramework.xml
+D:\mobileapps\gmcscoservices_git\SmartServiceweb\SmartServiceweb\bin\EntityFramework.SqlServer.xml
+D:\mobileapps\gmcscoservices_git\SmartServiceweb\SmartServiceweb\obj\Debug\SmartServiceweb.csprojResolveAssemblyReference.cache
+D:\mobileapps\gmcscoservices_git\SmartServiceweb\SmartServiceweb\obj\Debug\SmartServiceweb.dll
+D:\mobileapps\gmcscoservices_git\SmartServiceweb\SmartServiceweb\obj\Debug\SmartServiceweb.pdb

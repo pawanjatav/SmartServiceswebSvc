@@ -309,11 +309,11 @@ namespace SmartServiceweb
                 }
             }
         }
-        public List<UserRegister> GetUser(int uid)
+        public List<UserDataRegister> GetUser(int uid)
         {
          return   GetUserInfo(uid.ToString());
         }
-        public List<UserRegister> GetUserInfo(string UserID)
+        public List<UserDataRegister> GetUserInfo(string UserID)
         {
             using (TransactionScope trans = new TransactionScope())
             {
@@ -382,7 +382,11 @@ namespace SmartServiceweb
 
                     }
                     trans.Complete();
-                    return lst;
+                   List<UserDataRegister> udr = new List<UserDataRegister>();
+                    foreach(var i in lst) {
+                        udr.Add(new UserDataRegister() { LastName = i.LastName, FirstName = i.FirstName, FilePathName = i.FilePathName });
+                    }
+                    return udr;
                 }
                 catch (Exception ex)
                 {
