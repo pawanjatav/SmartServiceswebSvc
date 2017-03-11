@@ -51,7 +51,7 @@ namespace SmartServiceweb
 
         [OperationContract]
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "GetBlogList/{BlogID}/{CategoryID}")]
-        List<AddBlogs> GetBlogList(string BlogID, string CategoryID);
+        List<AddBlogData> GetBlogList(string BlogID, string CategoryID);
 
         [OperationContract]
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "UserComment/{BlogID}")]

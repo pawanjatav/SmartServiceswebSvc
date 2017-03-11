@@ -36,8 +36,24 @@ namespace SmartServiceweb.Model
         #endregion
 
         [DataContract]
-        public partial class AddBlogs
+        public partial class AddBlogData
         {
+            [DataMember]
+            public int BlogId { get; set; }
+            [DataMember]
+            public int UserID { get; set; }
+            [DataMember]
+            public int CategoryID { get; set; }
+            [DataMember]
+            public string textContent { get; set; }
+            [DataMember]
+            public System.DateTime CreatedDate { get; set; }
+            [DataMember]
+            public System.DateTime UpdatedDate { get; set; }
+            [DataMember]
+            public int PrivacyID { get; set; }
+            [DataMember]
+            public string UserLikes { get; set; }
             [DataMember]
             public List<string> Fileinfo { get; set; }
             [DataMember]

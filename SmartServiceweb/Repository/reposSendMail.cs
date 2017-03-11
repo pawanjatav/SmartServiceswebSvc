@@ -25,7 +25,7 @@ namespace SmartServiceweb.Repository
 <div >
 <div style='Margin:10% 20%;border:1px solid grey;border-radius: 8px;'>
 <div style='background-color: #45916B; height: 50px; width: 100%; margin-bottom: 10px; border-top-left-radius: 5px; border-top-right-radius: 5px;'>
-<a href='http://gmcsco.com' target='_blank'> <img alt=' ' src='http://gmcsco.com/images/logo-header.png'></a></div>
+ </div>
 ");
             Str.Append(body);
             Str.Append(@"
@@ -70,7 +70,7 @@ namespace SmartServiceweb.Repository
 
                         </div>";
 
-                return SendEmail("Hi! " + Name + " Wants to Contact you", StrB.ToString());
+                return SendEmail("Hi! " + Name + " Wants to Contact you", StrB.ToString(),Email);
             }
             catch (Exception)
             {
@@ -89,14 +89,12 @@ namespace SmartServiceweb.Repository
                 StrB += "<h3>" + obj.Password+ "<h3/>";
                 StrB += @"<br/><br/>
                         Best Regards,<br/>
-                        Smart Service App. <br/>
-                Phone No. +91 (8884) 33-3268 
-                        <br />
-                        Email :. <span style='text-transform: none;'>info@gmcsco.com </span>
+                        Smart Service App. 
+                       
                         </p>
                         </div>";
              //  return;
-                return SendEmail("Password Recovery Mail from Smart Service APP", StrB.ToString().Replace("\r", string.Empty).Replace("\n", string.Empty));
+                return SendEmail("Password Recovery Mail from Smart Service APP", StrB.ToString().Replace("\r", string.Empty).Replace("\n", string.Empty),obj.Email);
             }
             catch (Exception)
             {
@@ -106,7 +104,7 @@ namespace SmartServiceweb.Repository
 
         }
 
-        public bool SendEmail(string Subject, string Body)
+        public bool SendEmail(string Subject, string Body,string toEmail)
         {
             MailMessage msg = new MailMessage();
             try
@@ -119,8 +117,8 @@ namespace SmartServiceweb.Repository
                 client.EnableSsl = false;
 
 
-                //Convert string to Mail Address
-                MailAddress Send_to = new MailAddress(ConfigurationManager.AppSettings["mailSendTo"].ToString());
+                //Convert string to Mail Address//ConfigurationManager.AppSettings["mailSendTo"].ToString()
+                MailAddress Send_to = new MailAddress(toEmail);
                 MailAddress Send_frm = new MailAddress("<no-reply@smartapp.com>", "SmartApp(no-reply)");
 
 

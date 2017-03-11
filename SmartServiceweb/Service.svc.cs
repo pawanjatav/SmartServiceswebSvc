@@ -566,14 +566,14 @@ namespace SmartServiceweb
         }
 
 
-        public List<AddBlogs> GetBlogList(string BlogID, string CategoryID)
+        public List<AddBlogData> GetBlogList(string BlogID, string CategoryID)
         {
             try
             {
                 GmContext _db = new GmContext();
 
                 int UID = 0;
-                List<AddBlogs> lst = new List<AddBlogs>();
+                List<AddBlogData> lst = new List<AddBlogData>();
 
                 if (BlogID != "null" && BlogID.Trim() != "L")
                 {
@@ -588,7 +588,15 @@ namespace SmartServiceweb
                     }).AsQueryable();
 
                     // Master Data for Blogs
-                    lst = _db.AddBlogs.Where(z => z.BlogId == UID).OrderByDescending(z => z.BlogId).ToList();
+                    lst = _db.AddBlogs.Where(z => z.BlogId == UID).OrderByDescending(z => z.BlogId).Select(a => new AddBlogData { 
+                    BlogId=a.BlogId,
+                    CategoryID=a.CategoryID,
+                    CreatedDate=a.CreatedDate,
+                    PrivacyID=a.PrivacyID,
+                    textContent=a.textContent,
+                    UpdatedDate=a.UpdatedDate,
+                    UserID=a.UserID,
+                    UserLikes=a.UserLikes}).ToList();
                     // Add User Information in against of Blog
                     lst.ForEach(a =>
                     {                       
@@ -626,7 +634,17 @@ namespace SmartServiceweb
 
 
                     // Master Data for Blogs
-                    lst = _db.AddBlogs.Where(z => z.CategoryID == UID).OrderByDescending(z => z.BlogId).ToList();
+                    lst = _db.AddBlogs.Where(z => z.CategoryID == UID).OrderByDescending(z => z.BlogId).Select(a => new AddBlogData
+                    {
+                        BlogId = a.BlogId,
+                        CategoryID = a.CategoryID,
+                        CreatedDate = a.CreatedDate,
+                        PrivacyID = a.PrivacyID,
+                        textContent = a.textContent,
+                        UpdatedDate = a.UpdatedDate,
+                        UserID = a.UserID,
+                        UserLikes = a.UserLikes
+                    }).ToList();
                     // Add User Information in against of Blog
                     lst.ForEach(a =>
                     {
@@ -675,7 +693,17 @@ namespace SmartServiceweb
                     }).AsQueryable();
 
                     //   Master Data for Blogs
-                    lst = _db.AddBlogs.OrderByDescending(z => z.BlogId).ToList();
+                    lst = _db.AddBlogs.OrderByDescending(z => z.BlogId).Select(a => new AddBlogData
+                    {
+                        BlogId = a.BlogId,
+                        CategoryID = a.CategoryID,
+                        CreatedDate = a.CreatedDate,
+                        PrivacyID = a.PrivacyID,
+                        textContent = a.textContent,
+                        UpdatedDate = a.UpdatedDate,
+                        UserID = a.UserID,
+                        UserLikes = a.UserLikes
+                    }).ToList();
                     //    Add User Information in against of Blog
                     lst.ForEach(a =>
                     {   
@@ -749,7 +777,7 @@ namespace SmartServiceweb
                     {
                         ReturnObj = new ReturnValues
                         {
-                            Success = "Failure",
+                            Success = "Email address not exists, please try again",
                         };
                     }
                     return ReturnObj;
@@ -777,9 +805,9 @@ namespace SmartServiceweb
 
 
 
-      
 
-        
+
+      
     }
 
 

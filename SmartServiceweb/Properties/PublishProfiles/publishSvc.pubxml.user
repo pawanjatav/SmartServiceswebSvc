@@ -6,7 +6,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <_PublishTargetUrl>E:\GULAM_Work\SmartServiceweb\PublishSmartwebSvc</_PublishTargetUrl>
+    <_PublishTargetUrl>E:\GULAM_Work\SmartServiceswebSvc\PublishSmartwebSvc</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/EntityFramework.dll">
@@ -16,7 +16,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/07/2017 22:26:05</publishTime>
     </File>
     <File Include="bin/SmartServiceweb.dll">
-      <publishTime>03/08/2017 00:42:54</publishTime>
+      <publishTime>03/11/2017 10:51:16</publishTime>
     </File>
     <File Include="Global.asax">
       <publishTime>03/07/2017 23:38:24</publishTime>
@@ -130,7 +130,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/24/2016 21:42:44</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>03/08/2017 00:42:56</publishTime>
+      <publishTime>03/11/2017 10:45:15</publishTime>
     </File>
   </ItemGroup>
 </Project>

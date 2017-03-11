@@ -7,3 +7,13 @@ E:\GULAM_Work\SmartServiceweb\SmartServiceweb\bin\EntityFramework.xml
 E:\GULAM_Work\SmartServiceweb\SmartServiceweb\bin\EntityFramework.SqlServer.xml
 E:\GULAM_Work\SmartServiceweb\SmartServiceweb\obj\Release\SmartServiceweb.dll
 E:\GULAM_Work\SmartServiceweb\SmartServiceweb\obj\Release\SmartServiceweb.pdb
+E:\GULAM_Work\SmartServiceswebSvc\SmartServiceweb\bin\SmartServiceweb.dll.config
+E:\GULAM_Work\SmartServiceswebSvc\SmartServiceweb\bin\SmartServiceweb.dll
+E:\GULAM_Work\SmartServiceswebSvc\SmartServiceweb\bin\SmartServiceweb.pdb
+E:\GULAM_Work\SmartServiceswebSvc\SmartServiceweb\bin\EntityFramework.dll
+E:\GULAM_Work\SmartServiceswebSvc\SmartServiceweb\bin\EntityFramework.SqlServer.dll
+E:\GULAM_Work\SmartServiceswebSvc\SmartServiceweb\bin\EntityFramework.xml
+E:\GULAM_Work\SmartServiceswebSvc\SmartServiceweb\bin\EntityFramework.SqlServer.xml
+E:\GULAM_Work\SmartServiceswebSvc\SmartServiceweb\obj\Release\SmartServiceweb.dll
+E:\GULAM_Work\SmartServiceswebSvc\SmartServiceweb\obj\Release\SmartServiceweb.pdb
+E:\GULAM_Work\SmartServiceswebSvc\SmartServiceweb\obj\Release\SmartServiceweb.csprojResolveAssemblyReference.cache
