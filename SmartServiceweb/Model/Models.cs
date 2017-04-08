@@ -21,6 +21,11 @@ namespace SmartServiceweb.Model
             public string Source { get; set; }
             [DataMember]
             public bool Status { get; set; }
+            [DataMember]
+            public string UserLikes { get; set; }
+            
+
+
         }
         #endregion
 
@@ -87,6 +92,9 @@ namespace SmartServiceweb.Model
         public string UserName { get; set; }
         [DataMember]
         public int RegistrationID { get; set; }
+
+        [DataMember]
+        public string GCMId { get; set; }
 
 
 

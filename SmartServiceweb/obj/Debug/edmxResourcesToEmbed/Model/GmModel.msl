@@ -80,6 +80,7 @@
     <EntitySetMapping Name="UserRegister">
       <EntityTypeMapping TypeName="GmContextModel.UserRegister">
         <MappingFragment StoreEntitySet="UserRegister">
+          <ScalarProperty Name="GCMId" ColumnName="GCMId" />
           <ScalarProperty Name="RegistrationID" ColumnName="RegistrationID" />
           <ScalarProperty Name="FirstName" ColumnName="FirstName" />
           <ScalarProperty Name="LastName" ColumnName="LastName" />

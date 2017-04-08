@@ -50,8 +50,8 @@ namespace SmartServiceweb
         List<FileSettings> GetDocuments(string SourceID, string Filtype);
 
         [OperationContract]
-        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "GetBlogList/{BlogID}/{CategoryID}")]
-        List<AddBlogData> GetBlogList(string BlogID, string CategoryID);
+        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "GetBlogList/{BlogID}/{CategoryID}/{page}/{pageSize}")]
+        List<AddBlogData> GetBlogList(string BlogID, string CategoryID,string page, string pageSize);
 
         [OperationContract]
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "UserComment/{BlogID}")]

@@ -124,6 +124,7 @@ namespace SmartServiceweb
                     trans.Complete();
                     ReturnValues objReturn = new ReturnValues
                     {
+                        UserLikes = _updateblog.UserLikes,
                         Success = "Success",
                         Status = true
 
@@ -311,7 +312,7 @@ namespace SmartServiceweb
         }
         public List<UserDataRegister> GetUser(int uid)
         {
-         return   GetUserInfo(uid.ToString());
+            return GetUserInfo(uid.ToString());
         }
         public List<UserDataRegister> GetUserInfo(string UserID)
         {
@@ -382,9 +383,10 @@ namespace SmartServiceweb
 
                     }
                     trans.Complete();
-                   List<UserDataRegister> udr = new List<UserDataRegister>();
-                    foreach(var i in lst) {
-                        udr.Add(new UserDataRegister() { LastName = i.LastName, FirstName = i.FirstName, FilePathName = i.FilePathName });
+                    List<UserDataRegister> udr = new List<UserDataRegister>();
+                    foreach (var i in lst)
+                    {
+                        udr.Add(new UserDataRegister() { LastName = i.LastName, FirstName = i.FirstName, FilePathName = i.FilePathName,GCMId=i.GCMId });
                     }
                     return udr;
                 }
@@ -490,6 +492,11 @@ namespace SmartServiceweb
                         obj.CreatedDate = DateTime.Now;
                         obj.UpdatedDate = DateTime.Now;
                         resultValue = _o.Save(obj);
+                        var getBlogData = GetBlogList(obj.BlogId.ToString(), "null", "1", "1");
+                        if (getBlogData != null && getBlogData.Count > 0)
+                        {
+                            ReposNotification.sendAndroidPush(getBlogData);
+                        }
                     }
 
                     ReturnValues result = null;
@@ -570,12 +577,16 @@ namespace SmartServiceweb
         }
 
 
-        public List<AddBlogData> GetBlogList(string BlogID, string CategoryID)
+        public List<AddBlogData> GetBlogList(string BlogID, string CategoryID, string pages, string pageSizes)
         {
+            int page = int.Parse(pages);
+
+            int pageSize = int.Parse(pageSizes);
             try
             {
                 GmContext _db = new GmContext();
-
+                int TotalSize = _db.AddBlogs.Count();
+                int PageSkip = (page - 1) * pageSize;
                 int UID = 0;
                 List<AddBlogData> lst = new List<AddBlogData>();
 
@@ -583,162 +594,173 @@ namespace SmartServiceweb
                 {
                     UID = int.Parse(BlogID);
 
-                    //List of All the Blog Documents
-                    var lsts = _db.BlogDocuments.Where(z => z.BlogId == UID).Join(_db.FileSettings.Where(z => z.FileType == "BlogImage"), U => U.FileID, F => F.Id, (U, F) => new { u = U, f = F }).Select(us => new
+                    if (PageSkip < TotalSize)
                     {
-                        FilePathName = us.f.FilePath,
-                        BlogID = us.u.BlogId
-
-                    }).AsQueryable();
-
-                    // Master Data for Blogs
-                    lst = _db.AddBlogs.Where(z => z.BlogId == UID).OrderByDescending(z => z.BlogId).Select(a => new AddBlogData { 
-                    BlogId=a.BlogId,
-                    CategoryID=a.CategoryID,
-                    CreatedDate=a.CreatedDate,
-                    PrivacyID=a.PrivacyID,
-                    textContent=a.textContent,
-                    UpdatedDate=a.UpdatedDate,
-                    UserID=a.UserID,
-                    UserLikes=a.UserLikes}).ToList();
-                    // Add User Information in against of Blog
-                    lst.ForEach(a =>
-                    {                       
-                        var us = GetUser(a.UserID).FirstOrDefault();
-                        List<UserRegister> lstUserinfo = new List<UserRegister>();
-                        lstUserinfo.Add(new UserRegister
+                        var lsts = _db.BlogDocuments.Where(z => z.BlogId == UID).Join(_db.FileSettings.Where(z => z.FileType == "BlogImage"), U => U.FileID, F => F.Id, (U, F) => new { u = U, f = F }).Select(us => new
                         {
-                            Email = us.Email,
-                            FilePathName = us.FilePathName,
-                            FirstName = us.FirstName,
-                            LastName = us.LastName,
-                            Mobile = us.Mobile,
-                            RegistrationID = us.RegistrationID,
-                            UserName = us.UserName
+                            FilePathName = us.f.FilePath,
+                            BlogID = us.u.BlogId
+
+                        }).AsQueryable();
+
+                        // Master Data for Blogs
+                        lst = _db.AddBlogs.Where(z => z.BlogId == UID).OrderByDescending(z => z.BlogId).Select(a => new AddBlogData
+                        {
+                            BlogId = a.BlogId,
+                            CategoryID = a.CategoryID,
+                            CreatedDate = a.CreatedDate,
+                            PrivacyID = a.PrivacyID,
+                            textContent = a.textContent,
+                            UpdatedDate = a.UpdatedDate,
+                            UserID = a.UserID,
+                            UserLikes = a.UserLikes
+                        }).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                        // Add User Information in against of Blog
+                        lst.ForEach(a =>
+                        {
+                            var us = GetUser(a.UserID).FirstOrDefault();
+                            List<UserRegister> lstUserinfo = new List<UserRegister>();
+                            lstUserinfo.Add(new UserRegister
+                            {
+                                Email = us.Email,
+                                FilePathName = us.FilePathName,
+                                FirstName = us.FirstName,
+                                LastName = us.LastName,
+                                Mobile = us.Mobile,
+                                RegistrationID = us.RegistrationID,
+                                UserName = us.UserName,
+                                GCMId=us.GCMId
+                            });
+                            a.Userinfo = lstUserinfo;
                         });
-                        a.Userinfo = lstUserinfo;
-                    });
 
-                    // Add image Information in against of Blog
-                    lst.ForEach(a =>
-                    {
-                        var imginfo = lsts.ToList().Where(d => d.BlogID == a.BlogId).ToList();
-                        List<string> lstFilepath = new List<string>();
-                        foreach (var f in imginfo)
+                        // Add image Information in against of Blog
+                        lst.ForEach(a =>
                         {
-                            lstFilepath.Add(f.FilePathName);
-                        }
-                        a.Fileinfo = lstFilepath;
-                        //.ForEach(z => a.Fileinfo.Add(z != null ? z.FilePathName : null));
-                    });
+                            var imginfo = lsts.ToList().Where(d => d.BlogID == a.BlogId).ToList();
+                            List<string> lstFilepath = new List<string>();
+                            foreach (var f in imginfo)
+                            {
+                                lstFilepath.Add(f.FilePathName);
+                            }
+                            a.Fileinfo = lstFilepath;
+                            //.ForEach(z => a.Fileinfo.Add(z != null ? z.FilePathName : null));
+                        });
+                    }
                 }
                 else if (CategoryID != "null" && BlogID.Trim() != "L")
                 {
                     UID = int.Parse(CategoryID);
 
 
-                    // Master Data for Blogs
-                    lst = _db.AddBlogs.Where(z => z.CategoryID == UID).OrderByDescending(z => z.BlogId).Select(a => new AddBlogData
+                    if (PageSkip < TotalSize)
                     {
-                        BlogId = a.BlogId,
-                        CategoryID = a.CategoryID,
-                        CreatedDate = a.CreatedDate,
-                        PrivacyID = a.PrivacyID,
-                        textContent = a.textContent,
-                        UpdatedDate = a.UpdatedDate,
-                        UserID = a.UserID,
-                        UserLikes = a.UserLikes
-                    }).ToList();
-                    // Add User Information in against of Blog
-                    lst.ForEach(a =>
-                    {
-                        
-                        var us = GetUser(a.UserID).FirstOrDefault();
-                        List<UserRegister> lstUserinfo = new List<UserRegister>();
-                        lstUserinfo.Add(new UserRegister
+                        lst = _db.AddBlogs.Where(z => z.CategoryID == UID).OrderByDescending(z => z.BlogId).Select(a => new AddBlogData
                         {
-                            Email = us.Email,
-                            FilePathName = us.FilePathName,
-                            FirstName = us.FirstName,
-                            LastName = us.LastName,
-                            Mobile = us.Mobile,
-                            RegistrationID = us.RegistrationID,
-                            UserName = us.UserName
-                        });
-                        a.Userinfo = lstUserinfo;
-                    });
-                    //List of All the Blog Documents
-                    var lsts = _db.BlogDocuments.Join(_db.FileSettings.Where(z => z.FileType == "BlogImage"), U => U.FileID, F => F.Id, (U, F) => new { u = U, f = F }).Select(us => new
-                    {
-                        FilePathName = us.f.FilePath,
-                        BlogID = us.u.BlogId
-                    }).AsQueryable();
+                            BlogId = a.BlogId,
+                            CategoryID = a.CategoryID,
+                            CreatedDate = a.CreatedDate,
+                            PrivacyID = a.PrivacyID,
+                            textContent = a.textContent,
+                            UpdatedDate = a.UpdatedDate,
+                            UserID = a.UserID,
+                            UserLikes = a.UserLikes
+                        }).Skip(PageSkip).Take(pageSize).ToList();
+                        // Add User Information in against of Blog
+                        lst.ForEach(a =>
+                        {
 
-                    // Add image Information in against of Blog
-                    lst.ForEach(a =>
-                    {
-                        var imginfo = lsts.ToList().Where(d => d.BlogID == a.BlogId).ToList();
-                        List<string> lstFilepath = new List<string>();
-                        foreach (var f in imginfo)
+                            var us = GetUser(a.UserID).FirstOrDefault();
+                            List<UserRegister> lstUserinfo = new List<UserRegister>();
+                            lstUserinfo.Add(new UserRegister
+                            {
+                                Email = us.Email,
+                                FilePathName = us.FilePathName,
+                                FirstName = us.FirstName,
+                                LastName = us.LastName,
+                                Mobile = us.Mobile,
+                                RegistrationID = us.RegistrationID,
+                                UserName = us.UserName,
+                                GCMId=us.GCMId
+                            });
+                            a.Userinfo = lstUserinfo;
+                        });
+                        //List of All the Blog Documents
+                        var lsts = _db.BlogDocuments.Join(_db.FileSettings.Where(z => z.FileType == "BlogImage"), U => U.FileID, F => F.Id, (U, F) => new { u = U, f = F }).Select(us => new
                         {
-                            lstFilepath.Add(f.FilePathName);
-                        }
-                        a.Fileinfo = lstFilepath;
-                        //.ForEach(z => a.Fileinfo.Add(z != null ? z.FilePathName : null));
-                    });
+                            FilePathName = us.f.FilePath,
+                            BlogID = us.u.BlogId
+                        }).AsQueryable();
+
+                        // Add image Information in against of Blog
+                        lst.ForEach(a =>
+                        {
+                            var imginfo = lsts.ToList().Where(d => d.BlogID == a.BlogId).ToList();
+                            List<string> lstFilepath = new List<string>();
+                            foreach (var f in imginfo)
+                            {
+                                lstFilepath.Add(f.FilePathName);
+                            }
+                            a.Fileinfo = lstFilepath;
+                            //.ForEach(z => a.Fileinfo.Add(z != null ? z.FilePathName : null));
+                        });
+                    }
                 }
                 else
                 {
-                    //  List of All the Blog Documents
-                    var lsts = _db.BlogDocuments.Join(_db.FileSettings.Where(z => z.FileType == "BlogImage"), U => U.FileID, F => F.Id, (U, F) => new { u = U, f = F }).Select(us => new
+                    if (PageSkip < TotalSize)
                     {
-                        FilePathName = us.f.FilePath,
-                        BlogID = us.u.BlogId
-                    }).AsQueryable();
-
-                    //   Master Data for Blogs
-                    lst = _db.AddBlogs.OrderByDescending(z => z.BlogId).Select(a => new AddBlogData
-                    {
-                        BlogId = a.BlogId,
-                        CategoryID = a.CategoryID,
-                        CreatedDate = a.CreatedDate,
-                        PrivacyID = a.PrivacyID,
-                        textContent = a.textContent,
-                        UpdatedDate = a.UpdatedDate,
-                        UserID = a.UserID,
-                        UserLikes = a.UserLikes
-                    }).ToList();
-                    //    Add User Information in against of Blog
-                    lst.ForEach(a =>
-                    {   
-                        var us = GetUser(a.UserID).FirstOrDefault();
-                        List<UserRegister> lstUserinfo = new List<UserRegister>();
-                        lstUserinfo.Add(new UserRegister
+                        var lsts = _db.BlogDocuments.Join(_db.FileSettings.Where(z => z.FileType == "BlogImage"), U => U.FileID, F => F.Id, (U, F) => new { u = U, f = F }).Select(us => new
                         {
-                            Email = us.Email,
-                            FilePathName = us.FilePathName,
-                            FirstName = us.FirstName,
-                            LastName = us.LastName,
-                            Mobile = us.Mobile,
-                            RegistrationID = us.RegistrationID,
-                            UserName = us.UserName
+                            FilePathName = us.f.FilePath,
+                            BlogID = us.u.BlogId
+                        }).AsQueryable();
+
+                        //   Master Data for Blogs
+                        lst = _db.AddBlogs.OrderByDescending(z => z.BlogId).Select(a => new AddBlogData
+                        {
+                            BlogId = a.BlogId,
+                            CategoryID = a.CategoryID,
+                            CreatedDate = a.CreatedDate,
+                            PrivacyID = a.PrivacyID,
+                            textContent = a.textContent,
+                            UpdatedDate = a.UpdatedDate,
+                            UserID = a.UserID,
+                            UserLikes = a.UserLikes
+                        }).Skip(PageSkip).Take(pageSize).ToList();
+                        //    Add User Information in against of Blog
+                        lst.ForEach(a =>
+                        {
+                            var us = GetUser(a.UserID).FirstOrDefault();
+                            List<UserRegister> lstUserinfo = new List<UserRegister>();
+                            lstUserinfo.Add(new UserRegister
+                            {
+                                Email = us.Email,
+                                FilePathName = us.FilePathName,
+                                FirstName = us.FirstName,
+                                LastName = us.LastName,
+                                Mobile = us.Mobile,
+                                RegistrationID = us.RegistrationID,
+                                UserName = us.UserName,
+                                GCMId = us.GCMId
+                            });
+                            a.Userinfo = lstUserinfo;
                         });
-                        a.Userinfo = lstUserinfo;
-                    });
 
-                    // Add image Information in against of Blog
+                        // Add image Information in against of Blog
 
-                    lst.ForEach(a =>
-                    {
-                        var imginfo = lsts.ToList().Where(d => d.BlogID == a.BlogId).ToList();
-                        List<string> lstFilepath = new List<string>();
-                        foreach (var f in imginfo)
+                        lst.ForEach(a =>
                         {
-                            lstFilepath.Add(f.FilePathName);
-                        }
-                        a.Fileinfo = lstFilepath;
-                        //.ForEach(z => a.Fileinfo.Add(z != null ? z.FilePathName : null));
-                    });
+                            var imginfo = lsts.ToList().Where(d => d.BlogID == a.BlogId).ToList();
+                            List<string> lstFilepath = new List<string>();
+                            foreach (var f in imginfo)
+                            {
+                                lstFilepath.Add(f.FilePathName);
+                            }
+                            a.Fileinfo = lstFilepath;
+                            //.ForEach(z => a.Fileinfo.Add(z != null ? z.FilePathName : null));
+                        });
+                    }
 
                 }
                 //trans.Complete();
@@ -811,7 +833,7 @@ namespace SmartServiceweb
 
 
 
-      
+
     }
 
 

@@ -155,6 +155,7 @@
       <DependentUpon>PicUpload.ashx</DependentUpon>
     </Compile>
     <Compile Include="Repository\repoModel.cs" />
+    <Compile Include="Repository\ReposNotification.cs" />
     <Compile Include="Repository\reposSendMail.cs" />
     <Compile Include="Repository\RepsistoryEF.cs" />
     <Compile Include="Service.svc.cs">

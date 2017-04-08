@@ -83,6 +83,7 @@
     <Property Name="Mobile" Type="nvarchar(max)" />
     <Property Name="CreateDate" Type="datetime" Nullable="false" />
     <Property Name="FileId" Type="int" Nullable="false" />
+    <Property Name="GCMId" Type="text" />
   </EntityType>
   <EntityContainer Name="GmContextModelStoreContainer">
     <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />

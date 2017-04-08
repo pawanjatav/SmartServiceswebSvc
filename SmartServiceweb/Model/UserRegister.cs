@@ -23,5 +23,6 @@ namespace SmartServiceweb.Model
         public string Mobile { get; set; }
         public System.DateTime CreateDate { get; set; }
         public int FileId { get; set; }
+        public string GCMId { get; set; }
     }
 }
