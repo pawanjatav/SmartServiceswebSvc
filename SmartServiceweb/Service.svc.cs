@@ -229,8 +229,25 @@ namespace SmartServiceweb
                 try
                 {
                     RepsistoryEF<UserRegister> _o = new global::RepsistoryEF<UserRegister>();
+                    UserRegister resultValue = new UserRegister() ;
                     obj.CreateDate = DateTime.Now;
-                    var resultValue = _o.Save(obj);
+                    if (obj.RegistrationID != null && obj.RegistrationID > 0)
+                    {
+                        resultValue = _o.GetListBySelector(z => z.RegistrationID == obj.RegistrationID).FirstOrDefault();
+                        if (resultValue != null)
+                        {
+                            resultValue.FirstName = obj.FirstName;
+                            resultValue.LastName = obj.LastName;
+                            resultValue.Email = obj.Email;
+                            resultValue.Mobile = obj.Mobile;
+                            resultValue.GCMId = obj.GCMId;
+                            var es = _o.Update(resultValue);
+                        }
+                    }
+                    else
+                    {
+                        resultValue = _o.Save(obj);
+                    }
                     if (obj.FileName != null)
                     {
                         RepsistoryEF<FileSettings> _F = new global::RepsistoryEF<FileSettings>();
@@ -267,8 +284,7 @@ namespace SmartServiceweb
 
         public ReturnValues LoginUser(Login obj)
         {
-            using (TransactionScope trans = new TransactionScope())
-            {
+           
                 try
                 {
                     RepsistoryEF<Model.UserRegister> _o = new global::RepsistoryEF<Model.UserRegister>();
@@ -277,6 +293,11 @@ namespace SmartServiceweb
                     ReturnValues result = null;
                     if (resultValue != null)
                     {
+                        if (obj.GCMId != null && obj.GCMId != string.Empty)
+                        {
+                            resultValue.GCMId = obj.GCMId;
+                            RegisterUser(resultValue);
+                        }
                         result = new ReturnValues
                         {
                             Success = "Login Successfully",
@@ -291,12 +312,12 @@ namespace SmartServiceweb
                             Source = "0",
                         };
                     }
-                    trans.Complete();
+                   
                     return result;
                 }
                 catch (Exception ex)
                 {
-                    trans.Dispose();
+                   
                     ReturnValues objex = new ReturnValues
                     {
                         Failure = ex.Message,
@@ -306,9 +327,9 @@ namespace SmartServiceweb
                 }
                 finally
                 {
-                    trans.Dispose();
+                    
                 }
-            }
+            
         }
         public List<UserDataRegister> GetUser(int uid)
         {
