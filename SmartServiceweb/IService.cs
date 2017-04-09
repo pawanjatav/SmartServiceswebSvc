@@ -69,5 +69,9 @@ namespace SmartServiceweb
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "ForgetPassword/{emailID}")]
         ReturnValues ForgetPassword(string emailID);
 
+        [OperationContract]
+        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "sendnote/{messages}")]
+        void sendnote(string messages);
+
     }
 }

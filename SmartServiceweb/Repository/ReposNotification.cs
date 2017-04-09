@@ -12,7 +12,7 @@ using System.Text;
 
 public class ReposNotification
 {
-
+    static int notCount = 0;
     #region notification
     public static void sendAndroidPush(List<AddBlogData> objBlogData)
     {
@@ -20,9 +20,25 @@ public class ReposNotification
         {
             string ApplicationID;
             string SENDER_ID;
-            var userData=objBlogData.FirstOrDefault().Userinfo.FirstOrDefault();
+            var userData = objBlogData.FirstOrDefault().Userinfo.FirstOrDefault();
+            RepsistoryEF<UserRegister> o_ = new RepsistoryEF<UserRegister>();
+            var users = o_.GetList();
+            string gcms = "[";
+            foreach (var usr in users)
+            {
+                if (usr.GCMId != null)
+                {
+                    var c = usr.GCMId.Count();
+                    if (c >= 152)
+                    {
+                        gcms += "\"" + usr.GCMId + "\",";
+                    }
+                }
+            }
+            gcms += "]";
+            gcms = gcms.Remove(gcms.LastIndexOf(","), 1);
             string GCMID = userData.GCMId;
-            string srtDesc=objBlogData.FirstOrDefault().textContent;
+            string srtDesc = objBlogData.FirstOrDefault().textContent;
             string Messages = string.Empty;
             if (srtDesc != null && srtDesc != string.Empty)
             {
@@ -30,7 +46,7 @@ public class ReposNotification
             }
             else
             {
-                Messages = userData.FirstName + " " + userData.LastName + " : (Image)" ;
+                Messages = userData.FirstName + " " + userData.LastName + " : (Image)";
             }
 
 
@@ -41,13 +57,13 @@ public class ReposNotification
             tRequest = WebRequest.Create("https://android.googleapis.com/gcm/send"); tRequest.Method = "post";
             tRequest.ContentType = "application/json";
             tRequest.Headers.Add(string.Format("Authorization: key={0}", ApplicationID)); tRequest.Headers.Add(string.Format("Sender: id={0}", SENDER_ID));
-                  
+
             using (var streamWriter = new StreamWriter(tRequest.GetRequestStream()))
             {
                 Random rnd = new Random();
                 string month = rnd.Next(1, 9999999).ToString();
-                string postData = "{\"data\": {\"title\":\" Smart Services \", \"notId\":\"" + month + "\", \"content-available\" :\"1\",\"time\": \"" + System.DateTime.Now.ToString() + "\",\"style\":\"inbox\",\"summaryText\":\"There are %n% notification\",\"message\":\"" + Messages + "\",\"registration_ids\":[\"" + GCMID + "\"]}";
-            
+                //   string postData = "{\"data\": {\"title\":\" Smart Services \", \"notId\":\"" + month + "\", \"content-available\" :\"1\",\"time\": \"" + System.DateTime.Now.ToString() + "\",\"style\":\"inbox\",\"summaryText\":\"There are %n% notification\",\"message\":\"" + Messages + "\",\"registration_ids\":" + gcms + "}}";
+                string postData = "{\"data\": {\"title\":\" Smart Services \", \"notId\":\"" + month + "\", \"content-available\" :\"1\",\"time\": \"" + System.DateTime.Now.ToString() + "\",\"style\":\"inbox\",\"summaryText\":\"There are %n% notification\",\"message\":\"" + Messages + "\",\"blogId\":\"" + objBlogData.FirstOrDefault().BlogId + "\"},\"registration_ids\":" + gcms + "}";
                 streamWriter.Write(postData);
                 streamWriter.Flush();
                 streamWriter.Close();
@@ -63,13 +79,130 @@ public class ReposNotification
         {
 
         }
+        //string ApplicationID;
+        //string SENDER_ID;
+
+        //RepsistoryEF<SmartServiceweb.Model.UserRegister> _o = new global::RepsistoryEF<SmartServiceweb.Model.UserRegister>();
+        //var UserRec = _o.GetList();
+        //ApplicationID = "AIzaSyD_Nz1tMXadvxgwli8KYV_mOkEOu8eYALI";
+        //SENDER_ID = "982524787977";        
+        //notCount++;
+        //foreach (var l in UserRec)
+        //{
+        //    if (l.GCMId != null && l.GCMId != string.Empty)
+        //    {
+        //        try
+        //        {
+        //            var userData = objBlogData.FirstOrDefault().Userinfo.FirstOrDefault();
+        //            string GCMID = l.GCMId;
+        //            string srtDesc = objBlogData.FirstOrDefault().textContent;
+        //            string Messages = string.Empty;
+        //            if (srtDesc != null && srtDesc != string.Empty)
+        //            {
+        //                Messages = userData.FirstName + " " + userData.LastName + " @ " + srtDesc;
+        //            }
+        //            else
+        //            {
+        //                Messages = userData.FirstName + " " + userData.LastName + " @ (Image)";
+        //            }
+        //            WebRequest tRequest;
+        //            tRequest = WebRequest.Create("https://android.googleapis.com/gcm/send"); tRequest.Method = "post";
+        //            tRequest.ContentType = "application/json";
+        //            tRequest.Headers.Add(string.Format("Authorization: key={0}", ApplicationID)); tRequest.Headers.Add(string.Format("Sender: id={0}", SENDER_ID));
+
+        //            using (var streamWriter = new StreamWriter(tRequest.GetRequestStream()))
+        //            {
+        //                string postData = "{\"data\": {\"title\":\" Smart Services \", \"notId\":\"" + notCount + "\", \"content-available\" :\"1\",\"time\": \"" + System.DateTime.Now.ToString() + "\",\"style\":\"inbox\",\"summaryText\":\"There are %n% notification\",\"message\":\"" + Messages + "\",\"blogId\":\"" + objBlogData.FirstOrDefault().BlogId + "\"},\"registration_ids\":[\"" + GCMID + "\"]}";
+                    
+        //                streamWriter.Write(postData);
+        //                streamWriter.Flush();
+        //                streamWriter.Close();
+        //            }
+
+        //            var httpResponse = (HttpWebResponse)tRequest.GetResponse();
+        //            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+        //            {
+        //                var result = streamReader.ReadToEnd();
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+
+        //        }
+        //    }
+
+        //}
+
+    }
+
+    public static void sendAndroidPush(string message)
+    {
+
+        string ApplicationID;
+        string SENDER_ID;
+
+        RepsistoryEF<SmartServiceweb.Model.UserRegister> _o = new global::RepsistoryEF<SmartServiceweb.Model.UserRegister>();
+        var UserRec = _o.GetList();
+        ApplicationID = "AIzaSyD_Nz1tMXadvxgwli8KYV_mOkEOu8eYALI";
+        SENDER_ID = "982524787977";
+
+        foreach (var l in UserRec)
+        {
+            if (l.GCMId != null && l.GCMId != string.Empty)
+            {
+                try
+                {
+                    var userData = l;
+                    string GCMID = userData.GCMId;
+                    string srtDesc = message;
+                    string Messages = string.Empty;
+                    if (srtDesc != null && srtDesc != string.Empty)
+                    {
+                        Messages = userData.FirstName + " " + userData.LastName + " @ " + srtDesc;
+                    }
+                    else
+                    {
+                        Messages = userData.FirstName + " " + userData.LastName + " @ (Image)";
+                    }
+                    WebRequest tRequest;
+                    tRequest = WebRequest.Create("https://android.googleapis.com/gcm/send"); tRequest.Method = "post";
+                    tRequest.ContentType = "application/json";
+                    tRequest.Headers.Add(string.Format("Authorization: key={0}", ApplicationID)); tRequest.Headers.Add(string.Format("Sender: id={0}", SENDER_ID));
+
+                    using (var streamWriter = new StreamWriter(tRequest.GetRequestStream()))
+                    {
+                        Random rnd = new Random();
+                        string month = rnd.Next(1, 9999999).ToString();
+                        string postData = "{\"data\": {\"title\":\" Smart Services \", \"notId\":\"" + month + "\", \"content-available\" :\"1\",\"time\": \"" + System.DateTime.Now.ToString() + "\",\"style\":\"inbox\",\"summaryText\":\"There are %n% notification\",\"message\":\"" + Messages + "\"},\"registration_ids\":[\"" + GCMID + "\"]}";
+                        //string postData = "{\"data\": {\"title\":\" Smart Services \", \"notId\":\"" + month + "\", \"content-available\" :\"1\",\"time\": \"" + System.DateTime.Now.ToString() + "\",\"style\":\"inbox\",\"summaryText\":\"There are %n% notification\",\"message\":\"" + getDatafromLst[0].Message + "\"},\"registration_ids\":[\"" + getDatafromLst[0].GCMId + "\"]}";
+                 
+
+                        streamWriter.Write(postData);
+                        streamWriter.Flush();
+                        streamWriter.Close();
+                    }
+
+                    var httpResponse = (HttpWebResponse)tRequest.GetResponse();
+                    using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                    {
+                        var result = streamReader.ReadToEnd();
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+
+        }
+
 
     }
 
 
     #endregion
 
-    
+
 }
 #region ["Extension Method for Convertion Datatable to Tolist"]
 

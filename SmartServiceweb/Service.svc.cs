@@ -222,6 +222,15 @@ namespace SmartServiceweb
         #endregion
 
         #region [Registration/Login]
+        public void sendnote(string messages)
+        {
+         //   ReposNotification.sendAndroidPush(messages);
+            var getBlogData = GetBlogList(messages, "null", "1", "1");
+            if (getBlogData != null && getBlogData.Count > 0)
+            {
+                ReposNotification.sendAndroidPush(getBlogData);
+            }
+        }
         public void RegisterUser(UserRegister obj)
         {
             using (TransactionScope trans = new TransactionScope())
@@ -229,7 +238,7 @@ namespace SmartServiceweb
                 try
                 {
                     RepsistoryEF<UserRegister> _o = new global::RepsistoryEF<UserRegister>();
-                    UserRegister resultValue = new UserRegister() ;
+                    UserRegister resultValue = new UserRegister();
                     obj.CreateDate = DateTime.Now;
                     if (obj.RegistrationID != null && obj.RegistrationID > 0)
                     {
@@ -284,52 +293,52 @@ namespace SmartServiceweb
 
         public ReturnValues LoginUser(Login obj)
         {
-           
-                try
-                {
-                    RepsistoryEF<Model.UserRegister> _o = new global::RepsistoryEF<Model.UserRegister>();
 
-                    var resultValue = _o.GetListBySelector(z => z.UserName == obj.UserName && z.Password == obj.Password).FirstOrDefault();
-                    ReturnValues result = null;
-                    if (resultValue != null)
-                    {
-                        if (obj.GCMId != null && obj.GCMId != string.Empty)
-                        {
-                            resultValue.GCMId = obj.GCMId;
-                            RegisterUser(resultValue);
-                        }
-                        result = new ReturnValues
-                        {
-                            Success = "Login Successfully",
-                            Source = resultValue.RegistrationID.ToString(),
-                        };
-                    }
-                    else
-                    {
-                        result = new ReturnValues
-                        {
-                            Success = "Login Failed, Please enter correct username and password",
-                            Source = "0",
-                        };
-                    }
-                   
-                    return result;
-                }
-                catch (Exception ex)
+            try
+            {
+                RepsistoryEF<Model.UserRegister> _o = new global::RepsistoryEF<Model.UserRegister>();
+
+                var resultValue = _o.GetListBySelector(z => z.UserName == obj.UserName && z.Password == obj.Password).FirstOrDefault();
+                ReturnValues result = null;
+                if (resultValue != null)
                 {
-                   
-                    ReturnValues objex = new ReturnValues
+                    if (obj.GCMId != null && obj.GCMId != string.Empty)
                     {
-                        Failure = ex.Message,
-                        Source = WebOperationContext.Current.IncomingRequest.UriTemplateMatch.RequestUri.AbsoluteUri,
+                        resultValue.GCMId = obj.GCMId;
+                        RegisterUser(resultValue);
+                    }
+                    result = new ReturnValues
+                    {
+                        Success = "Login Successfully",
+                        Source = resultValue.RegistrationID.ToString(),
                     };
-                    throw new WebFaultException<ReturnValues>(objex, System.Net.HttpStatusCode.InternalServerError);
                 }
-                finally
+                else
                 {
-                    
+                    result = new ReturnValues
+                    {
+                        Success = "Login Failed, Please enter correct username and password",
+                        Source = "0",
+                    };
                 }
-            
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+
+                ReturnValues objex = new ReturnValues
+                {
+                    Failure = ex.Message,
+                    Source = WebOperationContext.Current.IncomingRequest.UriTemplateMatch.RequestUri.AbsoluteUri,
+                };
+                throw new WebFaultException<ReturnValues>(objex, System.Net.HttpStatusCode.InternalServerError);
+            }
+            finally
+            {
+
+            }
+
         }
         public List<UserDataRegister> GetUser(int uid)
         {
@@ -407,7 +416,7 @@ namespace SmartServiceweb
                     List<UserDataRegister> udr = new List<UserDataRegister>();
                     foreach (var i in lst)
                     {
-                        udr.Add(new UserDataRegister() { LastName = i.LastName, FirstName = i.FirstName, FilePathName = i.FilePathName,GCMId=i.GCMId });
+                        udr.Add(new UserDataRegister() { LastName = i.LastName, FirstName = i.FirstName, FilePathName = i.FilePathName, GCMId = i.GCMId });
                     }
                     return udr;
                 }
@@ -650,7 +659,7 @@ namespace SmartServiceweb
                                 Mobile = us.Mobile,
                                 RegistrationID = us.RegistrationID,
                                 UserName = us.UserName,
-                                GCMId=us.GCMId
+                                GCMId = us.GCMId
                             });
                             a.Userinfo = lstUserinfo;
                         });
@@ -702,7 +711,7 @@ namespace SmartServiceweb
                                 Mobile = us.Mobile,
                                 RegistrationID = us.RegistrationID,
                                 UserName = us.UserName,
-                                GCMId=us.GCMId
+                                GCMId = us.GCMId
                             });
                             a.Userinfo = lstUserinfo;
                         });
@@ -860,5 +869,7 @@ namespace SmartServiceweb
 
 
         #endregion
+
+
 }
 
