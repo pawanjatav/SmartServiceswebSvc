@@ -12,6 +12,8 @@ namespace SmartServiceweb.Model
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class GmContext : DbContext
     {
@@ -33,5 +35,14 @@ namespace SmartServiceweb.Model
         public virtual DbSet<FileSettings> FileSettings { get; set; }
         public virtual DbSet<PrivacyType> PrivacyType { get; set; }
         public virtual DbSet<UserRegister> UserRegister { get; set; }
+    
+        public virtual int DeleteBlog(Nullable<int> blogID)
+        {
+            var blogIDParameter = blogID.HasValue ?
+                new ObjectParameter("BlogID", blogID) :
+                new ObjectParameter("BlogID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteBlog", blogIDParameter);
+        }
     }
 }

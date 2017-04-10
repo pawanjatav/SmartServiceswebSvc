@@ -85,6 +85,9 @@
     <Property Name="FileId" Type="int" Nullable="false" />
     <Property Name="GCMId" Type="text" />
   </EntityType>
+  <Function Name="DeleteBlog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="SmartWebDB786">
+    <Parameter Name="BlogID" Type="int" Mode="In" />
+  </Function>
   <EntityContainer Name="GmContextModelStoreContainer">
     <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="AddBlogs" EntityType="Self.AddBlogs" Schema="dbo" store:Type="Tables" />

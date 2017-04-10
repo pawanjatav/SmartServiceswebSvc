@@ -94,5 +94,8 @@
     <EntitySet Name="FileSettings" EntityType="Self.FileSettings" />
     <EntitySet Name="PrivacyType" EntityType="Self.PrivacyType" />
     <EntitySet Name="UserRegister" EntityType="Self.UserRegister" />
+    <FunctionImport Name="DeleteBlog">
+      <Parameter Name="BlogID" Mode="In" Type="Int32" />
+    </FunctionImport>
   </EntityContainer>
 </Schema>

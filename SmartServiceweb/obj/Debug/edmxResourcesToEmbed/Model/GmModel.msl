@@ -93,5 +93,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="DeleteBlog" FunctionName="GmContextModel.Store.DeleteBlog" />
   </EntityContainerMapping>
 </Mapping>

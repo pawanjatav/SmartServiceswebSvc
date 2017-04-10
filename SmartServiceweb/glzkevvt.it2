@@ -38,10 +38,6 @@ namespace SmartServiceweb
         ReturnValues AddBlog(AddBlogs obj);
 
         [OperationContract]
-        [WebInvoke(Method = "POST", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, UriTemplate = "DeleteBlogImage")]
-        ReturnValues DeleteBlogImage(BlogData obj);
-
-        [OperationContract]
         [WebInvoke(Method = "POST", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, UriTemplate = "DeleteBlog")]
         ReturnValues DeleteBlog(BlogData obj);
 
@@ -59,7 +55,7 @@ namespace SmartServiceweb
 
         [OperationContract]
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "GetBlogList/{BlogID}/{CategoryID}/{page}/{pageSize}")]
-        List<AddBlogData> GetBlogList(string BlogID, string CategoryID, string page, string pageSize);
+        List<AddBlogData> GetBlogList(string BlogID, string CategoryID,string page, string pageSize);
 
         [OperationContract]
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "UserComment/{BlogID}")]

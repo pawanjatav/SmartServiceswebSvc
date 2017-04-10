@@ -64,7 +64,7 @@ namespace SmartServiceweb.Model
             [DataMember]
             public List<string> Fileinfo { get; set; }
             [DataMember]
-            public List<UserRegister> Userinfo { get; set; }
+            public List<UserDataRegister> Userinfo { get; set; }
         }
    [DataContract]
         public partial class UserRegister
@@ -77,6 +77,17 @@ namespace SmartServiceweb.Model
         
         }
 
+   [DataContract]
+   public class BlogData
+   {
+       [DataMember]
+       public int BlogId { get; set; }
+
+       [DataMember]
+       public string ImageName { get; set; }
+
+
+   }
     [DataContract]
     public class UserDataRegister
     {
@@ -94,11 +105,12 @@ namespace SmartServiceweb.Model
         public string UserName { get; set; }
         [DataMember]
         public int RegistrationID { get; set; }
-
+        [DataMember]
+        public byte[] FileName { get; set; }
         [DataMember]
         public string GCMId { get; set; }
-
-
-
     }
+
+
+
 }

@@ -225,8 +225,8 @@ namespace SmartServiceweb
         public void sendnote(string messages)
         {
          //   ReposNotification.sendAndroidPush(messages);
-            var getBlogData = GetBlogListByID(messages);
-            if (getBlogData != null)
+            var getBlogData = GetBlogList(messages, "null", "1", "1");
+            if (getBlogData != null && getBlogData.Count > 0)
             {
                 ReposNotification.sendAndroidPush(getBlogData);
             }
@@ -498,49 +498,15 @@ namespace SmartServiceweb
 
         #region ["Add Blogs"]
 
-        public AddBlogData GetBlogListByID(string BlogID)
-        {
-            GmContext _db = new GmContext();
-           
-            int BlogsID = int.Parse(BlogID);
-            List<AddBlogData> lst = new List<AddBlogData>();
-            lst = _db.AddBlogs.Where(z => z.BlogId == BlogsID).OrderByDescending(z => z.BlogId).Select(a => new AddBlogData
-            {
-                BlogId = a.BlogId,
-                CategoryID = a.CategoryID,
-                CreatedDate = a.CreatedDate,
-                PrivacyID = a.PrivacyID,
-                textContent = a.textContent,
-                UpdatedDate = a.UpdatedDate,
-                UserID = a.UserID,
-                UserLikes = a.UserLikes
-            }).ToList();
-            // Add User Information in against of Blog
-            lst.ForEach(a =>
-            {
-                var us = GetUser(a.UserID).FirstOrDefault();
-                List<UserDataRegister> lstUserinfo = new List<UserDataRegister>();
-                lstUserinfo.Add(new UserDataRegister
-                {
-                    Email = us.Email,
-                    FilePathName = us.FilePathName,
-                    FirstName = us.FirstName,
-                    LastName = us.LastName,
-                    Mobile = us.Mobile,
-                    RegistrationID = us.RegistrationID,
-                    UserName = us.UserName,
-                    GCMId = us.GCMId
-                });
-                a.Userinfo = lstUserinfo;
-            });
+        //public List<AddBlogData> GetBlogList(string BlogID, string CategoryID, string pages, string pageSizes)
+        //{ 
+        //  lst = _db.AddBlogs.Where(z => z.CategoryID == UID).OrderByDescending(z => z.BlogId).Select(a => new AddBlogData
+        //                {
+                        
+        //                }
+        //}
 
-
-            return lst.FirstOrDefault();
-
-
-        }
-
-        public ReturnValues DeleteBlog(BlogData obj)
+        public ReturnValues DeleteBlog(string BlogID)
         {
             using (TransactionScope trans = new TransactionScope())
             {
@@ -548,7 +514,8 @@ namespace SmartServiceweb
                 {
 
                     GmContext _db = new GmContext();
-                  int dleteblog=  _db.DeleteBlog(obj.BlogId);
+                  int dleteblog=  _db.DeleteBlog(int.Parse(BlogID));
+
                     ReturnValues result = null;
                     if (dleteblog >0)
                     {
@@ -556,46 +523,9 @@ namespace SmartServiceweb
                         {
                             Success = "Post Successfully Removed ",
                             Status = true,
-                            Source = obj.BlogId.ToString()
+                            Source = BlogID.ToString()
                         };
                     }
-                    trans.Complete();
-                    return result;
-                }
-                catch (Exception ex)
-                {
-                    trans.Dispose();
-                    ReturnValues objex = new ReturnValues
-                    {
-                        Failure = ex.Message,
-                        Source = WebOperationContext.Current.IncomingRequest.UriTemplateMatch.RequestUri.AbsoluteUri,
-                    };
-                    throw new WebFaultException<ReturnValues>(objex, System.Net.HttpStatusCode.InternalServerError);
-                }
-                finally
-                {
-                    trans.Dispose();
-                }
-            }
-        }
-
-        public ReturnValues DeleteBlogImage(BlogData obj)
-        {
-            using (TransactionScope trans = new TransactionScope())
-            {
-                try
-                {
-                    RepsistoryEF<FileSettings> _db = new RepsistoryEF<FileSettings>();                    
-                   _db.DeleteByExpression(z=>(z.FilePath==obj.ImageName));
-                    ReturnValues result = null;
-                    
-                        result = new ReturnValues
-                        {
-                            Success = "Image Successfully Removed ",
-                            Status = true,
-                            Source = obj.BlogId.ToString()
-                        };
-                    
                     trans.Complete();
                     return result;
                 }
@@ -643,8 +573,8 @@ namespace SmartServiceweb
                         obj.CreatedDate = DateTime.Now;
                         obj.UpdatedDate = DateTime.Now;
                         resultValue = _o.Save(obj);
-                        var getBlogData = GetBlogListByID(obj.BlogId.ToString());
-                        if (getBlogData != null)
+                        var getBlogData = GetBlogList(obj.BlogId.ToString(), "null", "1", "1");
+                        if (getBlogData != null && getBlogData.Count > 0)
                         {
                             ReposNotification.sendAndroidPush(getBlogData);
                         }
@@ -770,8 +700,8 @@ namespace SmartServiceweb
                         lst.ForEach(a =>
                         {
                             var us = GetUser(a.UserID).FirstOrDefault();
-                            List<UserDataRegister> lstUserinfo = new List<UserDataRegister>();
-                            lstUserinfo.Add(new UserDataRegister
+                            List<UserRegister> lstUserinfo = new List<UserRegister>();
+                            lstUserinfo.Add(new UserRegister
                             {
                                 Email = us.Email,
                                 FilePathName = us.FilePathName,
@@ -822,8 +752,8 @@ namespace SmartServiceweb
                         {
 
                             var us = GetUser(a.UserID).FirstOrDefault();
-                            List<UserDataRegister> lstUserinfo = new List<UserDataRegister>();
-                            lstUserinfo.Add(new UserDataRegister
+                            List<UserRegister> lstUserinfo = new List<UserRegister>();
+                            lstUserinfo.Add(new UserRegister
                             {
                                 Email = us.Email,
                                 FilePathName = us.FilePathName,
@@ -883,8 +813,8 @@ namespace SmartServiceweb
                         lst.ForEach(a =>
                         {
                             var us = GetUser(a.UserID).FirstOrDefault();
-                            List<UserDataRegister> lstUserinfo = new List<UserDataRegister>();
-                            lstUserinfo.Add(new UserDataRegister
+                            List<UserRegister> lstUserinfo = new List<UserRegister>();
+                            lstUserinfo.Add(new UserRegister
                             {
                                 Email = us.Email,
                                 FilePathName = us.FilePathName,
