@@ -23,7 +23,7 @@ namespace SmartServiceweb
 
         [OperationContract]
         [WebInvoke(Method = "POST", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, UriTemplate = "RegisterUser")]
-        void RegisterUser(UserRegister obj);
+        void RegisterUser(UserDataRegister obj);
 
         [OperationContract]
         [WebInvoke(Method = "POST", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, UriTemplate = "LoginUser")]
@@ -46,6 +46,10 @@ namespace SmartServiceweb
         ReturnValues DeleteBlog(BlogData obj);
 
         [OperationContract]
+        [WebInvoke(Method = "POST", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, UriTemplate = "ChangePassword")]
+        ReturnValues ChangePassword(ChangeUserPassword obj);
+
+        [OperationContract]
         [WebInvoke(Method = "POST", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, UriTemplate = "AddUpdateBlogComment")]
         ReturnValues AddUpdateBlogComment(BlogComments obj);
 
@@ -60,6 +64,10 @@ namespace SmartServiceweb
         [OperationContract]
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "GetBlogList/{BlogID}/{CategoryID}/{page}/{pageSize}")]
         List<AddBlogData> GetBlogList(string BlogID, string CategoryID, string page, string pageSize);
+
+        [OperationContract]
+        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "GetBlogListbyUserID/{CategoryID}/{UserID}/{page}/{pageSize}")]
+        List<AddBlogData> GetBlogListbyUserID(string CategoryID, string UserID, string page, string pageSize);
 
         [OperationContract]
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "UserComment/{BlogID}")]

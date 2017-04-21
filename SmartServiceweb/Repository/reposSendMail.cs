@@ -79,23 +79,35 @@ namespace SmartServiceweb.Repository
 
 
         }
-        public bool contentBody(UserRegister obj)
+        public bool contentBody(UserRegister obj, string EmailType)
         {
             try
             {
                 string StrB = string.Empty;
-                StrB += @"<div style='padding:10px;'>Hi " + obj.FirstName + " " + obj.LastName ;
-                StrB += "<br/><br/> Your Password for Smart Service App is below <br/>";
-                StrB += "<h3>" + obj.Password+ "<h3/>";
-                StrB += @"<br/><br/>
-                        Best Regards,<br/>
-                        Smart Service App. 
-                       
-                        </p>
-                        </div>";
-             //  return;
-                return SendEmail("Password Recovery Mail from Smart Service APP", StrB.ToString().Replace("\r", string.Empty).Replace("\n", string.Empty),obj.Email);
-            }
+                bool status=false;
+                switch (EmailType)
+                {
+
+                    case "ForgetPassword":
+                        StrB += @"<div style='padding:10px;'>Hi " + obj.FirstName + " " + obj.LastName;
+                        StrB += "<br/><br/> Your Password for Smart Service App is below <br/>";
+                        StrB += "<h3>" + obj.Password + "<h3/>";
+                        StrB += @"<br/><br/>Best Regards,<br/>Smart Service App. </p></div>";
+                        status= SendEmail("Password Recovery Mail from Smart Service APP", StrB.ToString().Replace("\r", string.Empty).Replace("\n", string.Empty), obj.Email);
+                        break;
+
+                    case "ChangePassword":
+                        StrB += @"<div style='padding:10px;'>Hi " + obj.FirstName + " " + obj.LastName;
+                        StrB += "<br/><br/> Your Password has been changed for Smart Service App. <br/> Your new password as below <br/>";
+                        StrB += "<h3>" + obj.Password + "<h3/>";
+                        StrB += @"<br/><br/>Best Regards,<br/>Smart Service App. </p></div>";
+                        status=SendEmail("New Password for Smart Service APP", StrB.ToString().Replace("\r", string.Empty).Replace("\n", string.Empty), obj.Email);
+                        break;
+
+
+                }
+                return status;
+             }
             catch (Exception)
             {
                 throw;

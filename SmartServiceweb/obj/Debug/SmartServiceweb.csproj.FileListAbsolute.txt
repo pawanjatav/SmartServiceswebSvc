@@ -27,3 +27,13 @@ D:\mobileapps\gmcscoservices_git\SmartServiceweb\SmartServiceweb\bin\EntityFrame
 D:\mobileapps\gmcscoservices_git\SmartServiceweb\SmartServiceweb\obj\Debug\SmartServiceweb.csprojResolveAssemblyReference.cache
 D:\mobileapps\gmcscoservices_git\SmartServiceweb\SmartServiceweb\obj\Debug\SmartServiceweb.dll
 D:\mobileapps\gmcscoservices_git\SmartServiceweb\SmartServiceweb\obj\Debug\SmartServiceweb.pdb
+D:\backupFiles\MyWork\GMCSCO\SmartServiceswebSvc\SmartServiceweb\bin\SmartServiceweb.dll.config
+D:\backupFiles\MyWork\GMCSCO\SmartServiceswebSvc\SmartServiceweb\bin\SmartServiceweb.dll
+D:\backupFiles\MyWork\GMCSCO\SmartServiceswebSvc\SmartServiceweb\bin\SmartServiceweb.pdb
+D:\backupFiles\MyWork\GMCSCO\SmartServiceswebSvc\SmartServiceweb\bin\EntityFramework.dll
+D:\backupFiles\MyWork\GMCSCO\SmartServiceswebSvc\SmartServiceweb\bin\EntityFramework.SqlServer.dll
+D:\backupFiles\MyWork\GMCSCO\SmartServiceswebSvc\SmartServiceweb\bin\EntityFramework.xml
+D:\backupFiles\MyWork\GMCSCO\SmartServiceswebSvc\SmartServiceweb\bin\EntityFramework.SqlServer.xml
+D:\backupFiles\MyWork\GMCSCO\SmartServiceswebSvc\SmartServiceweb\obj\Debug\SmartServiceweb.csprojResolveAssemblyReference.cache
+D:\backupFiles\MyWork\GMCSCO\SmartServiceswebSvc\SmartServiceweb\obj\Debug\SmartServiceweb.dll
+D:\backupFiles\MyWork\GMCSCO\SmartServiceswebSvc\SmartServiceweb\obj\Debug\SmartServiceweb.pdb

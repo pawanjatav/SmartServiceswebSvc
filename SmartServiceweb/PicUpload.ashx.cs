@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.SessionState;
 using System.IO;
- 
+
 using System.Web.Script.Serialization;
 using System.Drawing;
 using SmartServiceweb.Model;
@@ -40,7 +40,8 @@ namespace SmartServiceweb
                 string[] keys = context.Request.Form.AllKeys;
                 Service s = new Service();
 
-                UserRegister ur = new UserRegister();
+                UserDataRegister ur = new UserDataRegister();
+                ur.RegistrationID = int.Parse(context.Request.Form["RegistrationID"] != null ? context.Request.Form["RegistrationID"] : "0");
                 ur.FirstName = context.Request.Form["FirstName"];
                 ur.LastName = context.Request.Form["LastName"];
                 ur.Email = context.Request.Form["Email"];

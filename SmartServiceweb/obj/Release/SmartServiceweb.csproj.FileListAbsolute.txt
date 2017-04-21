@@ -17,3 +17,13 @@ E:\GULAM_Work\SmartServiceswebSvc\SmartServiceweb\bin\EntityFramework.SqlServer.
 E:\GULAM_Work\SmartServiceswebSvc\SmartServiceweb\obj\Release\SmartServiceweb.dll
 E:\GULAM_Work\SmartServiceswebSvc\SmartServiceweb\obj\Release\SmartServiceweb.pdb
 E:\GULAM_Work\SmartServiceswebSvc\SmartServiceweb\obj\Release\SmartServiceweb.csprojResolveAssemblyReference.cache
+D:\backupFiles\MyWork\GMCSCO\SmartServiceswebSvc\SmartServiceweb\bin\SmartServiceweb.dll.config
+D:\backupFiles\MyWork\GMCSCO\SmartServiceswebSvc\SmartServiceweb\bin\SmartServiceweb.dll
+D:\backupFiles\MyWork\GMCSCO\SmartServiceswebSvc\SmartServiceweb\bin\SmartServiceweb.pdb
+D:\backupFiles\MyWork\GMCSCO\SmartServiceswebSvc\SmartServiceweb\bin\EntityFramework.dll
+D:\backupFiles\MyWork\GMCSCO\SmartServiceswebSvc\SmartServiceweb\bin\EntityFramework.SqlServer.dll
+D:\backupFiles\MyWork\GMCSCO\SmartServiceswebSvc\SmartServiceweb\bin\EntityFramework.xml
+D:\backupFiles\MyWork\GMCSCO\SmartServiceswebSvc\SmartServiceweb\bin\EntityFramework.SqlServer.xml
+D:\backupFiles\MyWork\GMCSCO\SmartServiceswebSvc\SmartServiceweb\obj\Release\SmartServiceweb.csprojResolveAssemblyReference.cache
+D:\backupFiles\MyWork\GMCSCO\SmartServiceswebSvc\SmartServiceweb\obj\Release\SmartServiceweb.dll
+D:\backupFiles\MyWork\GMCSCO\SmartServiceswebSvc\SmartServiceweb\obj\Release\SmartServiceweb.pdb

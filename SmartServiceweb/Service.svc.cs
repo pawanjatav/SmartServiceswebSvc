@@ -224,14 +224,14 @@ namespace SmartServiceweb
         #region [Registration/Login]
         public void sendnote(string messages)
         {
-         //   ReposNotification.sendAndroidPush(messages);
+            //   ReposNotification.sendAndroidPush(messages);
             var getBlogData = GetBlogListByID(messages);
             if (getBlogData != null)
             {
                 ReposNotification.sendAndroidPush(getBlogData);
             }
         }
-        public void RegisterUser(UserRegister obj)
+        public void RegisterUser(UserDataRegister obj)
         {
             using (TransactionScope trans = new TransactionScope())
             {
@@ -240,7 +240,7 @@ namespace SmartServiceweb
                     RepsistoryEF<UserRegister> _o = new global::RepsistoryEF<UserRegister>();
                     UserRegister resultValue = new UserRegister();
                     obj.CreateDate = DateTime.Now;
-                    if (obj.RegistrationID != null && obj.RegistrationID > 0)
+                    if (obj.RegistrationID > 0)
                     {
                         resultValue = _o.GetListBySelector(z => z.RegistrationID == obj.RegistrationID).FirstOrDefault();
                         if (resultValue != null)
@@ -255,7 +255,20 @@ namespace SmartServiceweb
                     }
                     else
                     {
-                        resultValue = _o.Save(obj);
+                        UserRegister _obj = new UserRegister
+                        {
+                            RegistrationID = obj.RegistrationID,
+                            FirstName = obj.FirstName,
+                            LastName = obj.LastName,
+                            UserName = obj.UserName,
+                            Email = obj.Email,
+                            Password = obj.Password,
+                            Mobile = obj.Mobile,
+                            CreateDate = DateTime.Now,
+                            GCMId = obj.GCMId
+                        };
+
+                        resultValue = _o.Save(_obj);
                     }
                     if (obj.FileName != null)
                     {
@@ -304,8 +317,20 @@ namespace SmartServiceweb
                 {
                     if (obj.GCMId != null && obj.GCMId != string.Empty)
                     {
+                        UserDataRegister _obj = new UserDataRegister
+                        {
+                            RegistrationID = resultValue.RegistrationID,
+                            FirstName = resultValue.FirstName,
+                            LastName = resultValue.LastName,
+                            UserName = resultValue.UserName,
+                            Email = resultValue.Email,
+                            Password = resultValue.Password,
+                            Mobile = resultValue.Mobile,
+                            GCMId = obj.GCMId
+                        };
+
                         resultValue.GCMId = obj.GCMId;
-                        RegisterUser(resultValue);
+                         RegisterUser(_obj);
                     }
                     result = new ReturnValues
                     {
@@ -371,7 +396,9 @@ namespace SmartServiceweb
          LastName = us.u.LastName,
          Mobile = us.u.Mobile,
          RegistrationID = us.u.RegistrationID,
-         UserName = us.u.UserName
+         UserName = us.u.UserName,
+         FileId = us.f.Id,
+         GCMId = us.u.GCMId
      }).AsQueryable();
 
                         lst = lsts.ToList().Select(us => new UserRegister
@@ -382,7 +409,9 @@ namespace SmartServiceweb
                             LastName = us.LastName,
                             Mobile = us.Mobile,
                             RegistrationID = us.RegistrationID,
-                            UserName = us.UserName
+                            UserName = us.UserName,
+                            GCMId = us.GCMId,
+                            FileId = us.FileId
                         }).ToList();
 
                     }
@@ -397,7 +426,9 @@ namespace SmartServiceweb
        LastName = us.u.LastName,
        Mobile = us.u.Mobile,
        RegistrationID = us.u.RegistrationID,
-       UserName = us.u.UserName
+       UserName = us.u.UserName,
+       FileId = us.f.Id,
+       GCMId = us.u.GCMId
    }).AsQueryable().ToList();
 
                         lst = lsts.ToList().Select(us => new UserRegister
@@ -408,7 +439,9 @@ namespace SmartServiceweb
                             LastName = us.LastName,
                             Mobile = us.Mobile,
                             RegistrationID = us.RegistrationID,
-                            UserName = us.UserName
+                            UserName = us.UserName,
+                            GCMId = us.GCMId,
+                            FileId = us.FileId
                         }).ToList();
 
                     }
@@ -416,7 +449,7 @@ namespace SmartServiceweb
                     List<UserDataRegister> udr = new List<UserDataRegister>();
                     foreach (var i in lst)
                     {
-                        udr.Add(new UserDataRegister() { LastName = i.LastName, FirstName = i.FirstName, FilePathName = i.FilePathName, GCMId = i.GCMId });
+                        udr.Add(new UserDataRegister() { LastName = i.LastName, FirstName = i.FirstName, FilePathName = i.FilePathName, GCMId = i.GCMId, Email = i.Email, FileName = i.FileName, Mobile = i.Mobile, RegistrationID = i.RegistrationID, UserName = i.UserName });
                     }
                     return udr;
                 }
@@ -501,7 +534,7 @@ namespace SmartServiceweb
         public AddBlogData GetBlogListByID(string BlogID)
         {
             GmContext _db = new GmContext();
-           
+
             int BlogsID = int.Parse(BlogID);
             List<AddBlogData> lst = new List<AddBlogData>();
             lst = _db.AddBlogs.Where(z => z.BlogId == BlogsID).OrderByDescending(z => z.BlogId).Select(a => new AddBlogData
@@ -548,9 +581,9 @@ namespace SmartServiceweb
                 {
 
                     GmContext _db = new GmContext();
-                  int dleteblog=  _db.DeleteBlog(obj.BlogId);
+                    int dleteblog = _db.DeleteBlog(obj.BlogId);
                     ReturnValues result = null;
-                    if (dleteblog >0)
+                    if (dleteblog > 0)
                     {
                         result = new ReturnValues
                         {
@@ -585,17 +618,17 @@ namespace SmartServiceweb
             {
                 try
                 {
-                    RepsistoryEF<FileSettings> _db = new RepsistoryEF<FileSettings>();                    
-                   _db.DeleteByExpression(z=>(z.FilePath==obj.ImageName));
+                    RepsistoryEF<FileSettings> _db = new RepsistoryEF<FileSettings>();
+                    _db.DeleteByExpression(z => (z.FilePath == obj.ImageName));
                     ReturnValues result = null;
-                    
-                        result = new ReturnValues
-                        {
-                            Success = "Image Successfully Removed ",
-                            Status = true,
-                            Source = obj.BlogId.ToString()
-                        };
-                    
+
+                    result = new ReturnValues
+                    {
+                        Success = "Image Successfully Removed ",
+                        Status = true,
+                        Source = obj.BlogId.ToString()
+                    };
+
                     trans.Complete();
                     return result;
                 }
@@ -736,7 +769,7 @@ namespace SmartServiceweb
             try
             {
                 GmContext _db = new GmContext();
-                int TotalSize = _db.AddBlogs.Count();
+                //       int TotalSize = _db.AddBlogs.Count();
                 int PageSkip = (page - 1) * pageSize;
                 int UID = 0;
                 List<AddBlogData> lst = new List<AddBlogData>();
@@ -744,177 +777,80 @@ namespace SmartServiceweb
                 if (BlogID != "null" && BlogID.Trim() != "L")
                 {
                     UID = int.Parse(BlogID);
-
-                    if (PageSkip < TotalSize)
+                    lst = _db.AddBlogs.Where(z => z.BlogId == UID).OrderByDescending(z => z.BlogId).Select(a => new AddBlogData
                     {
-                        var lsts = _db.BlogDocuments.Where(z => z.BlogId == UID).Join(_db.FileSettings.Where(z => z.FileType == "BlogImage"), U => U.FileID, F => F.Id, (U, F) => new { u = U, f = F }).Select(us => new
-                        {
-                            FilePathName = us.f.FilePath,
-                            BlogID = us.u.BlogId
+                        BlogId = a.BlogId,
+                        CategoryID = a.CategoryID,
+                        CreatedDate = a.CreatedDate,
+                        PrivacyID = a.PrivacyID,
+                        textContent = a.textContent,
+                        UpdatedDate = a.UpdatedDate,
+                        UserID = a.UserID,
+                        UserLikes = a.UserLikes
+                    }).Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
-                        }).AsQueryable();
-
-                        // Master Data for Blogs
-                        lst = _db.AddBlogs.Where(z => z.BlogId == UID).OrderByDescending(z => z.BlogId).Select(a => new AddBlogData
-                        {
-                            BlogId = a.BlogId,
-                            CategoryID = a.CategoryID,
-                            CreatedDate = a.CreatedDate,
-                            PrivacyID = a.PrivacyID,
-                            textContent = a.textContent,
-                            UpdatedDate = a.UpdatedDate,
-                            UserID = a.UserID,
-                            UserLikes = a.UserLikes
-                        }).Skip((page - 1) * pageSize).Take(pageSize).ToList();
-                        // Add User Information in against of Blog
-                        lst.ForEach(a =>
-                        {
-                            var us = GetUser(a.UserID).FirstOrDefault();
-                            List<UserDataRegister> lstUserinfo = new List<UserDataRegister>();
-                            lstUserinfo.Add(new UserDataRegister
-                            {
-                                Email = us.Email,
-                                FilePathName = us.FilePathName,
-                                FirstName = us.FirstName,
-                                LastName = us.LastName,
-                                Mobile = us.Mobile,
-                                RegistrationID = us.RegistrationID,
-                                UserName = us.UserName,
-                                GCMId = us.GCMId
-                            });
-                            a.Userinfo = lstUserinfo;
-                        });
-
-                        // Add image Information in against of Blog
-                        lst.ForEach(a =>
-                        {
-                            var imginfo = lsts.ToList().Where(d => d.BlogID == a.BlogId).ToList();
-                            List<string> lstFilepath = new List<string>();
-                            foreach (var f in imginfo)
-                            {
-                                lstFilepath.Add(f.FilePathName);
-                            }
-                            a.Fileinfo = lstFilepath;
-                            //.ForEach(z => a.Fileinfo.Add(z != null ? z.FilePathName : null));
-                        });
-                    }
                 }
                 else if (CategoryID != "null" && BlogID.Trim() != "L")
                 {
                     UID = int.Parse(CategoryID);
-
-
-                    if (PageSkip < TotalSize)
+                    lst = _db.AddBlogs.Where(z => z.CategoryID == UID).OrderByDescending(z => z.BlogId).Select(a => new AddBlogData
                     {
-                        lst = _db.AddBlogs.Where(z => z.CategoryID == UID).OrderByDescending(z => z.BlogId).Select(a => new AddBlogData
-                        {
-                            BlogId = a.BlogId,
-                            CategoryID = a.CategoryID,
-                            CreatedDate = a.CreatedDate,
-                            PrivacyID = a.PrivacyID,
-                            textContent = a.textContent,
-                            UpdatedDate = a.UpdatedDate,
-                            UserID = a.UserID,
-                            UserLikes = a.UserLikes
-                        }).Skip(PageSkip).Take(pageSize).ToList();
-                        // Add User Information in against of Blog
-                        lst.ForEach(a =>
-                        {
-
-                            var us = GetUser(a.UserID).FirstOrDefault();
-                            List<UserDataRegister> lstUserinfo = new List<UserDataRegister>();
-                            lstUserinfo.Add(new UserDataRegister
-                            {
-                                Email = us.Email,
-                                FilePathName = us.FilePathName,
-                                FirstName = us.FirstName,
-                                LastName = us.LastName,
-                                Mobile = us.Mobile,
-                                RegistrationID = us.RegistrationID,
-                                UserName = us.UserName,
-                                GCMId = us.GCMId
-                            });
-                            a.Userinfo = lstUserinfo;
-                        });
-                        //List of All the Blog Documents
-                        var lsts = _db.BlogDocuments.Join(_db.FileSettings.Where(z => z.FileType == "BlogImage"), U => U.FileID, F => F.Id, (U, F) => new { u = U, f = F }).Select(us => new
-                        {
-                            FilePathName = us.f.FilePath,
-                            BlogID = us.u.BlogId
-                        }).AsQueryable();
-
-                        // Add image Information in against of Blog
-                        lst.ForEach(a =>
-                        {
-                            var imginfo = lsts.ToList().Where(d => d.BlogID == a.BlogId).ToList();
-                            List<string> lstFilepath = new List<string>();
-                            foreach (var f in imginfo)
-                            {
-                                lstFilepath.Add(f.FilePathName);
-                            }
-                            a.Fileinfo = lstFilepath;
-                            //.ForEach(z => a.Fileinfo.Add(z != null ? z.FilePathName : null));
-                        });
-                    }
+                        BlogId = a.BlogId,
+                        CategoryID = a.CategoryID,
+                        CreatedDate = a.CreatedDate,
+                        PrivacyID = a.PrivacyID,
+                        textContent = a.textContent,
+                        UpdatedDate = a.UpdatedDate,
+                        UserID = a.UserID,
+                        UserLikes = a.UserLikes
+                    }).Skip(PageSkip).Take(pageSize).ToList();
                 }
                 else
                 {
-                    if (PageSkip < TotalSize)
+                    lst = _db.AddBlogs.OrderByDescending(z => z.BlogId).Select(a => new AddBlogData
                     {
-                        var lsts = _db.BlogDocuments.Join(_db.FileSettings.Where(z => z.FileType == "BlogImage"), U => U.FileID, F => F.Id, (U, F) => new { u = U, f = F }).Select(us => new
-                        {
-                            FilePathName = us.f.FilePath,
-                            BlogID = us.u.BlogId
-                        }).AsQueryable();
-
-                        //   Master Data for Blogs
-                        lst = _db.AddBlogs.OrderByDescending(z => z.BlogId).Select(a => new AddBlogData
-                        {
-                            BlogId = a.BlogId,
-                            CategoryID = a.CategoryID,
-                            CreatedDate = a.CreatedDate,
-                            PrivacyID = a.PrivacyID,
-                            textContent = a.textContent,
-                            UpdatedDate = a.UpdatedDate,
-                            UserID = a.UserID,
-                            UserLikes = a.UserLikes
-                        }).Skip(PageSkip).Take(pageSize).ToList();
-                        //    Add User Information in against of Blog
-                        lst.ForEach(a =>
-                        {
-                            var us = GetUser(a.UserID).FirstOrDefault();
-                            List<UserDataRegister> lstUserinfo = new List<UserDataRegister>();
-                            lstUserinfo.Add(new UserDataRegister
-                            {
-                                Email = us.Email,
-                                FilePathName = us.FilePathName,
-                                FirstName = us.FirstName,
-                                LastName = us.LastName,
-                                Mobile = us.Mobile,
-                                RegistrationID = us.RegistrationID,
-                                UserName = us.UserName,
-                                GCMId = us.GCMId
-                            });
-                            a.Userinfo = lstUserinfo;
-                        });
-
-                        // Add image Information in against of Blog
-
-                        lst.ForEach(a =>
-                        {
-                            var imginfo = lsts.ToList().Where(d => d.BlogID == a.BlogId).ToList();
-                            List<string> lstFilepath = new List<string>();
-                            foreach (var f in imginfo)
-                            {
-                                lstFilepath.Add(f.FilePathName);
-                            }
-                            a.Fileinfo = lstFilepath;
-                            //.ForEach(z => a.Fileinfo.Add(z != null ? z.FilePathName : null));
-                        });
-                    }
+                        BlogId = a.BlogId,
+                        CategoryID = a.CategoryID,
+                        CreatedDate = a.CreatedDate,
+                        PrivacyID = a.PrivacyID,
+                        textContent = a.textContent,
+                        UpdatedDate = a.UpdatedDate,
+                        UserID = a.UserID,
+                        UserLikes = a.UserLikes
+                    }).Skip(PageSkip).Take(pageSize).ToList();
 
                 }
-                //trans.Complete();
+                lst.ForEach(a =>
+                {
+                    var us = GetUser(a.UserID).FirstOrDefault();
+                    List<UserDataRegister> lstUserinfo = new List<UserDataRegister>();
+                    lstUserinfo.Add(new UserDataRegister
+                    {
+                        Email = us.Email,
+                        FilePathName = us.FilePathName,
+                        FirstName = us.FirstName,
+                        LastName = us.LastName,
+                        Mobile = us.Mobile,
+                        RegistrationID = us.RegistrationID,
+                        UserName = us.UserName,
+                        GCMId = us.GCMId
+                    });
+                    a.Userinfo = lstUserinfo;
+
+                    var imginfo = _db.BlogDocuments.Where(z => z.BlogId == a.BlogId).Join(_db.FileSettings.Where(z => z.FileType == "BlogImage"), U => U.FileID, F => F.Id, (U, F) => new { u = U, f = F }).Select(x => new
+                    {
+                        FilePathName = x.f.FilePath,
+                        BlogID = x.u.BlogId
+
+                    }).AsQueryable().ToList();
+                    List<string> lstFilepath = new List<string>();
+                    foreach (var f in imginfo)
+                    {
+                        lstFilepath.Add(f.FilePathName);
+                    }
+                    a.Fileinfo = lstFilepath;
+
+                });
                 return lst;
             }
             catch (Exception ex)
@@ -942,11 +878,11 @@ namespace SmartServiceweb
                     if (_o.GetListBySelector(z => z.Email == emailID).Any())
                     {
                         reposSendMail o = new reposSendMail();
-                        var dd = o.contentBody(RegisteredUser);
+                        var dd = o.contentBody(RegisteredUser, "ForgetPassword");
                         ReturnObj = new ReturnValues
-                      {
-                          Success = "Success",
-                      };
+                        {
+                            Success = "Success",
+                        };
                         trans.Complete();
 
                     }
@@ -980,16 +916,162 @@ namespace SmartServiceweb
         #endregion
 
 
+        #region["Get BlogList by UserID"]
+        public List<AddBlogData> GetBlogListbyUserID(string CategoryID, string UserID, string pages, string pageSizes)
+        {
+            int page = int.Parse(pages);
+            int pageSize = int.Parse(pageSizes);
+            try
+            {
+                GmContext _db = new GmContext();
+                //  int TotalSize = _db.AddBlogs.Count();
+                int PageSkip = (page - 1) * pageSize;
+                int UID = 0;
+                List<AddBlogData> lst = new List<AddBlogData>();
 
+                if (CategoryID != "null" && UserID != "null")
+                {
+                    UID = int.Parse(CategoryID);
+                    var UsID = int.Parse(UserID);
 
+                    lst = _db.AddBlogs.Where(z => z.CategoryID == UID && z.UserID == UsID).OrderByDescending(z => z.BlogId).Select(a => new AddBlogData
+                    {
+                        BlogId = a.BlogId,
+                        CategoryID = a.CategoryID,
+                        CreatedDate = a.CreatedDate,
+                        PrivacyID = a.PrivacyID,
+                        textContent = a.textContent,
+                        UpdatedDate = a.UpdatedDate,
+                        UserID = a.UserID,
+                        UserLikes = a.UserLikes
+                    }).Skip(PageSkip).Take(pageSize).ToList();
 
+                }
+                else if (UserID != "null")
+                {
+                    UID = int.Parse(UserID);
+                    lst = _db.AddBlogs.Where(z => z.UserID == UID).OrderByDescending(z => z.BlogId).Select(a => new AddBlogData
+                    {
+                        BlogId = a.BlogId,
+                        CategoryID = a.CategoryID,
+                        CreatedDate = a.CreatedDate,
+                        PrivacyID = a.PrivacyID,
+                        textContent = a.textContent,
+                        UpdatedDate = a.UpdatedDate,
+                        UserID = a.UserID,
+                        UserLikes = a.UserLikes
+                    }).Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
+                }
+                lst.ForEach(a =>
+                           {
+                               var us = GetUser(a.UserID).FirstOrDefault();
+                               List<UserDataRegister> lstUserinfo = new List<UserDataRegister>();
+                               lstUserinfo.Add(new UserDataRegister
+                               {
+                                   Email = us.Email,
+                                   FilePathName = us.FilePathName,
+                                   FirstName = us.FirstName,
+                                   LastName = us.LastName,
+                                   Mobile = us.Mobile,
+                                   RegistrationID = us.RegistrationID,
+                                   UserName = us.UserName,
+                                   GCMId = us.GCMId
+                               });
+                               a.Userinfo = lstUserinfo;
+                               var imginfo = _db.BlogDocuments.Where(z => z.BlogId == a.BlogId).Join(_db.FileSettings.Where(z => z.FileType == "BlogImage"), U => U.FileID, F => F.Id, (U, F) => new { u = U, f = F }).Select(x => new
+                               {
+                                   FilePathName = x.f.FilePath,
+                                   BlogID = x.u.BlogId
+                               }).AsQueryable().ToList();
+                               List<string> lstFilepath = new List<string>();
+                               foreach (var f in imginfo)
+                               {
+                                   lstFilepath.Add(f.FilePathName);
+                               }
+                               a.Fileinfo = lstFilepath;
+                           });
+
+                return lst;
+            }
+            catch (Exception ex)
+            {
+                //  trans.Dispose();
+                throw ex;
+            }
+            finally
+            {
+                // trans.Dispose();
+            }
+        }
+
+        #endregion
+
+        #region["Change Password"]
+        public ReturnValues ChangePassword(ChangeUserPassword obj)
+        {
+            using (TransactionScope trans = new TransactionScope())
+            {
+                try
+                {
+                    ReturnValues ReturnObj = new ReturnValues();
+                    RepsistoryEF<UserRegister> _o = new global::RepsistoryEF<UserRegister>();
+                    UserRegister resultValue = new UserRegister();
+                    if (obj.RegistrationID > 0)
+                    {
+                        resultValue = _o.GetListBySelector(z => z.RegistrationID == obj.RegistrationID).FirstOrDefault();
+                        if (resultValue.Password.Equals(obj.OldPassword))
+                        {
+                            if (resultValue != null)
+                            {
+                                resultValue.Password = obj.NewPassword;
+                                var es = _o.Update(resultValue);
+                                reposSendMail o = new reposSendMail();
+                                var dd = o.contentBody(resultValue, "ChangePassword");
+                                ReturnObj = new ReturnValues
+                                {
+                                    Success = "Password has been changed successfully",
+                                    Status = true,
+                                };
+                            }
+                        }
+                        else
+                        {
+                            ReturnObj = new ReturnValues
+                            {
+                                Status = false,
+                                Failure = "Old Password does not match"
+                            };
+                        }
+                    }
+                    trans.Complete();
+                    return ReturnObj;
+                }
+                catch (Exception ex)
+                {
+                    trans.Dispose();
+
+                    ReturnValues objex = new ReturnValues
+                    {
+                        Failure = ex.Message,
+                        Source = WebOperationContext.Current.IncomingRequest.UriTemplateMatch.RequestUri.AbsoluteUri,
+                    };
+                    throw new WebFaultException<ReturnValues>(objex, System.Net.HttpStatusCode.InternalServerError);
+                }
+                finally
+                {
+                    trans.Dispose();
+                }
+            }
+        }
+
+        #endregion
 
     }
 
 
 
-        #endregion
+    #endregion
 
 
 }
