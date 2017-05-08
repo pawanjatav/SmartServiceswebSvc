@@ -11,31 +11,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="AddBlogs">
-      <EntityTypeMapping TypeName="GmContextModel.AddBlogs">
-        <MappingFragment StoreEntitySet="AddBlogs">
-          <ScalarProperty Name="BlogId" ColumnName="BlogId" />
-          <ScalarProperty Name="UserID" ColumnName="UserID" />
-          <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
-          <ScalarProperty Name="textContent" ColumnName="textContent" />
-          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
-          <ScalarProperty Name="PrivacyID" ColumnName="PrivacyID" />
-          <ScalarProperty Name="UserLikes" ColumnName="UserLikes" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="BlogComments">
-      <EntityTypeMapping TypeName="GmContextModel.BlogComments">
-        <MappingFragment StoreEntitySet="BlogComments">
-          <ScalarProperty Name="CommentId" ColumnName="CommentId" />
-          <ScalarProperty Name="BlogId" ColumnName="BlogId" />
-          <ScalarProperty Name="Comment" ColumnName="Comment" />
-          <ScalarProperty Name="UserID" ColumnName="UserID" />
-          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="BlogDocuments">
       <EntityTypeMapping TypeName="GmContextModel.BlogDocuments">
         <MappingFragment StoreEntitySet="BlogDocuments">
@@ -80,6 +55,7 @@
     <EntitySetMapping Name="UserRegister">
       <EntityTypeMapping TypeName="GmContextModel.UserRegister">
         <MappingFragment StoreEntitySet="UserRegister">
+          <ScalarProperty Name="IsNotification" ColumnName="IsNotification" />
           <ScalarProperty Name="GCMId" ColumnName="GCMId" />
           <ScalarProperty Name="RegistrationID" ColumnName="RegistrationID" />
           <ScalarProperty Name="FirstName" ColumnName="FirstName" />
@@ -94,5 +70,30 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <FunctionImportMapping FunctionImportName="DeleteBlog" FunctionName="GmContextModel.Store.DeleteBlog" />
+    <EntitySetMapping Name="AddBlogs">
+      <EntityTypeMapping TypeName="GmContextModel.AddBlogs">
+        <MappingFragment StoreEntitySet="AddBlogs">
+          <ScalarProperty Name="UserLikes" ColumnName="UserLikes" />
+          <ScalarProperty Name="PrivacyID" ColumnName="PrivacyID" />
+          <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="textContent" ColumnName="textContent" />
+          <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="BlogId" ColumnName="BlogId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BlogComments">
+      <EntityTypeMapping TypeName="GmContextModel.BlogComments">
+        <MappingFragment StoreEntitySet="BlogComments">
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+          <ScalarProperty Name="BlogId" ColumnName="BlogId" />
+          <ScalarProperty Name="CommentId" ColumnName="CommentId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

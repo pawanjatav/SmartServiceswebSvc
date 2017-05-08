@@ -24,5 +24,6 @@ namespace SmartServiceweb.Model
         public System.DateTime CreateDate { get; set; }
         public int FileId { get; set; }
         public string GCMId { get; set; }
+        public Nullable<bool> IsNotification { get; set; }
     }
 }

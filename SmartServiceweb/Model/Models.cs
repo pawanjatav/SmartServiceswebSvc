@@ -16,7 +16,6 @@ namespace SmartServiceweb.Model
         public string Success { get; set; }
         [DataMember]
         public string Failure { get; set; }
-
         [DataMember]
         public string Source { get; set; }
         [DataMember]
@@ -74,7 +73,7 @@ namespace SmartServiceweb.Model
         [DataMember]
         public string FilePathName { get; set; }
     }
- [DataContract]
+    [DataContract]
     public partial class ChangeUserPassword
     {
         [DataMember]
@@ -121,10 +120,19 @@ namespace SmartServiceweb.Model
         public byte[] FileName { get; set; }
         [DataMember]
         public string GCMId { get; set; }
-         [DataMember]
-       public System.DateTime CreateDate { get; set; }
+        [DataMember]
+        public System.DateTime CreateDate { get; set; }
+        [DataMember]
+        public bool IsNotification { get; set; }
     }
-
+    [DataContract]
+    public class notificationinfo
+    {
+        [DataMember]
+        public int UserID { get; set; }
+        [DataMember]
+        public bool Isnotifiy { get; set; }
+    }
 
 
 }

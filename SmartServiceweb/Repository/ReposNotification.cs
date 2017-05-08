@@ -22,7 +22,7 @@ public class ReposNotification
             string SENDER_ID;
             var userData = objBlogData.Userinfo.FirstOrDefault();
             RepsistoryEF<UserRegister> o_ = new RepsistoryEF<UserRegister>();
-            var users = o_.GetList();
+            var users = o_.GetListBySelector(z=>z.IsNotification==true);
             string gcms = "[";
             foreach (var usr in users)
             {

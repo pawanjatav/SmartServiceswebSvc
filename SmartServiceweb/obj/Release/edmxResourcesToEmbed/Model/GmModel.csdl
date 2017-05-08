@@ -10,29 +10,6 @@
     <Property Name="Model" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
     <Property Name="ProductVersion" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
   </EntityType>
-  <EntityType Name="AddBlogs">
-    <Key>
-      <PropertyRef Name="BlogId" />
-    </Key>
-    <Property Name="BlogId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="UserID" Type="Int32" Nullable="false" />
-    <Property Name="CategoryID" Type="Int32" Nullable="false" />
-    <Property Name="textContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="PrivacyID" Type="Int32" Nullable="false" />
-    <Property Name="UserLikes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-  </EntityType>
-  <EntityType Name="BlogComments">
-    <Key>
-      <PropertyRef Name="CommentId" />
-    </Key>
-    <Property Name="CommentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="BlogId" Type="Int32" Nullable="false" />
-    <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-    <Property Name="UserID" Type="Int32" Nullable="false" />
-    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-  </EntityType>
   <EntityType Name="BlogDocuments">
     <Key>
       <PropertyRef Name="DocumentId" />
@@ -84,11 +61,10 @@
     <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="FileId" Type="Int32" Nullable="false" />
     <Property Name="GCMId" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="IsNotification" Type="Boolean" />
   </EntityType>
   <EntityContainer Name="GmContext" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
-    <EntitySet Name="AddBlogs" EntityType="Self.AddBlogs" />
-    <EntitySet Name="BlogComments" EntityType="Self.BlogComments" />
     <EntitySet Name="BlogDocuments" EntityType="Self.BlogDocuments" />
     <EntitySet Name="Category" EntityType="Self.Category" />
     <EntitySet Name="FileSettings" EntityType="Self.FileSettings" />
@@ -97,5 +73,30 @@
     <FunctionImport Name="DeleteBlog">
       <Parameter Name="BlogID" Mode="In" Type="Int32" />
     </FunctionImport>
+    <EntitySet Name="AddBlogs" EntityType="GmContextModel.AddBlogs" />
+    <EntitySet Name="BlogComments" EntityType="GmContextModel.BlogComments" />
   </EntityContainer>
+  <EntityType Name="AddBlogs">
+    <Key>
+      <PropertyRef Name="BlogId" />
+    </Key>
+    <Property Name="BlogId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserID" Type="Int32" Nullable="false" />
+    <Property Name="CategoryID" Type="Int32" Nullable="false" />
+    <Property Name="textContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="PrivacyID" Type="Int32" Nullable="false" />
+    <Property Name="UserLikes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="BlogComments">
+    <Key>
+      <PropertyRef Name="CommentId" />
+    </Key>
+    <Property Name="CommentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BlogId" Type="Int32" Nullable="false" />
+    <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="UserID" Type="Int32" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
 </Schema>

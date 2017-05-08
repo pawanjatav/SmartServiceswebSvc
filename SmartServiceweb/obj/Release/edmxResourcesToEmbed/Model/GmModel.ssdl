@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="GmContextModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+<Schema Namespace="GmContextModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityType Name="__MigrationHistory">
     <Key>
       <PropertyRef Name="MigrationId" />
@@ -17,7 +17,7 @@
     <Property Name="BlogId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="UserID" Type="int" Nullable="false" />
     <Property Name="CategoryID" Type="int" Nullable="false" />
-    <Property Name="textContent" Type="text" />
+    <Property Name="textContent" Type="nvarchar(max)" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />
     <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
     <Property Name="PrivacyID" Type="int" Nullable="false" />
@@ -29,7 +29,7 @@
     </Key>
     <Property Name="CommentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="BlogId" Type="int" Nullable="false" />
-    <Property Name="Comment" Type="text" />
+    <Property Name="Comment" Type="nvarchar(max)" />
     <Property Name="UserID" Type="int" Nullable="false" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />
   </EntityType>
@@ -84,6 +84,7 @@
     <Property Name="CreateDate" Type="datetime" Nullable="false" />
     <Property Name="FileId" Type="int" Nullable="false" />
     <Property Name="GCMId" Type="text" />
+    <Property Name="IsNotification" Type="bit" />
   </EntityType>
   <Function Name="DeleteBlog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="SmartWebDB786">
     <Parameter Name="BlogID" Type="int" Mode="In" />

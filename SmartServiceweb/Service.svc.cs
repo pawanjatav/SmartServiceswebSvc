@@ -10,6 +10,7 @@ using System.Transactions;
 using System.ServiceModel.Web;
 using System.Text;
 using SmartServiceweb.Repository;
+using System.Data.Entity.Core.Objects;
 
 namespace SmartServiceweb
 {
@@ -265,7 +266,9 @@ namespace SmartServiceweb
                             Password = obj.Password,
                             Mobile = obj.Mobile,
                             CreateDate = DateTime.Now,
-                            GCMId = obj.GCMId
+                            GCMId = obj.GCMId,
+                            IsNotification = true
+
                         };
 
                         resultValue = _o.Save(_obj);
@@ -330,7 +333,7 @@ namespace SmartServiceweb
                         };
 
                         resultValue.GCMId = obj.GCMId;
-                         RegisterUser(_obj);
+                        RegisterUser(_obj);
                     }
                     result = new ReturnValues
                     {
@@ -398,7 +401,8 @@ namespace SmartServiceweb
          RegistrationID = us.u.RegistrationID,
          UserName = us.u.UserName,
          FileId = us.f.Id,
-         GCMId = us.u.GCMId
+         GCMId = us.u.GCMId,
+         IsNotification = us.u.IsNotification
      }).AsQueryable();
 
                         lst = lsts.ToList().Select(us => new UserRegister
@@ -411,7 +415,9 @@ namespace SmartServiceweb
                             RegistrationID = us.RegistrationID,
                             UserName = us.UserName,
                             GCMId = us.GCMId,
-                            FileId = us.FileId
+                            FileId = us.FileId,
+                            IsNotification = us.IsNotification
+
                         }).ToList();
 
                     }
@@ -428,7 +434,8 @@ namespace SmartServiceweb
        RegistrationID = us.u.RegistrationID,
        UserName = us.u.UserName,
        FileId = us.f.Id,
-       GCMId = us.u.GCMId
+       GCMId = us.u.GCMId,
+       IsNotification = us.u.IsNotification
    }).AsQueryable().ToList();
 
                         lst = lsts.ToList().Select(us => new UserRegister
@@ -441,7 +448,8 @@ namespace SmartServiceweb
                             RegistrationID = us.RegistrationID,
                             UserName = us.UserName,
                             GCMId = us.GCMId,
-                            FileId = us.FileId
+                            FileId = us.FileId,
+                            IsNotification = us.IsNotification
                         }).ToList();
 
                     }
@@ -449,7 +457,7 @@ namespace SmartServiceweb
                     List<UserDataRegister> udr = new List<UserDataRegister>();
                     foreach (var i in lst)
                     {
-                        udr.Add(new UserDataRegister() { LastName = i.LastName, FirstName = i.FirstName, FilePathName = i.FilePathName, GCMId = i.GCMId, Email = i.Email, FileName = i.FileName, Mobile = i.Mobile, RegistrationID = i.RegistrationID, UserName = i.UserName });
+                        udr.Add(new UserDataRegister() { LastName = i.LastName, FirstName = i.FirstName, FilePathName = i.FilePathName, GCMId = i.GCMId, Email = i.Email, FileName = i.FileName, Mobile = i.Mobile, RegistrationID = i.RegistrationID, UserName = i.UserName, IsNotification = i.IsNotification.Value });
                     }
                     return udr;
                 }
@@ -1067,6 +1075,53 @@ namespace SmartServiceweb
 
         #endregion
 
+        #region["Update Notification Info"]
+        public ReturnValues UpdateNotification(notificationinfo obj)
+        {
+            using (TransactionScope trans = new TransactionScope())
+            {
+                try
+                {
+                    RepsistoryEF<UserRegister> _o = new global::RepsistoryEF<UserRegister>();
+                    UserRegister resultValue = new UserRegister();                    
+                    if (obj.UserID > 0)
+                    {
+                        resultValue = _o.GetListBySelector(z => z.RegistrationID == obj.UserID).FirstOrDefault();
+                        if (resultValue != null)
+                        {
+                            resultValue.IsNotification = obj.Isnotifiy;                          
+                            var es = _o.Update(resultValue);
+                        }
+                    }
+                    ReturnValues result = null;
+                    if (resultValue != null)
+                    {
+                        result = new ReturnValues
+                        {
+                            Success = "Notificaiton Updated Successfully.",
+                        };
+                    }
+                    trans.Complete();
+                     return result;
+                }
+                catch (Exception ex)
+                {
+                    trans.Dispose();
+                    ReturnValues objex = new ReturnValues
+                    {
+                        Failure = ex.Message,
+                        Source = WebOperationContext.Current.IncomingRequest.UriTemplateMatch.RequestUri.AbsoluteUri,
+                    };
+                    throw new WebFaultException<ReturnValues>(objex, System.Net.HttpStatusCode.InternalServerError);
+                }
+                finally
+                {
+                    trans.Dispose();
+                }
+            }
+        }
+
+        #endregion
     }
 
 

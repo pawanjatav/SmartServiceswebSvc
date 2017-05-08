@@ -89,5 +89,9 @@ namespace SmartServiceweb
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "sendnote/{messages}")]
         void sendnote(string messages);
 
+        [OperationContract]
+        [WebInvoke(Method = "POST", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, UriTemplate = "UpdateNotification")]
+        ReturnValues UpdateNotification(notificationinfo obj);
+
     }
 }

@@ -49,7 +49,7 @@ namespace SmartServiceweb
                 ur.Password = context.Request.Form["Password"];
                 ur.Mobile = context.Request.Form["Mobile"];
                 ur.FilePathName = filename;
-
+                ur.IsNotification = true;
                 byte[] fileData = null;
                 using (var binaryReader = new BinaryReader(context.Request.InputStream))
                 {

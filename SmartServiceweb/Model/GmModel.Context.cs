@@ -28,13 +28,13 @@ namespace SmartServiceweb.Model
         }
     
         public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
-        public virtual DbSet<AddBlogs> AddBlogs { get; set; }
-        public virtual DbSet<BlogComments> BlogComments { get; set; }
         public virtual DbSet<BlogDocuments> BlogDocuments { get; set; }
         public virtual DbSet<Category> Category { get; set; }
         public virtual DbSet<FileSettings> FileSettings { get; set; }
         public virtual DbSet<PrivacyType> PrivacyType { get; set; }
         public virtual DbSet<UserRegister> UserRegister { get; set; }
+        public virtual DbSet<AddBlogs> AddBlogs { get; set; }
+        public virtual DbSet<BlogComments> BlogComments { get; set; }
     
         public virtual int DeleteBlog(Nullable<int> blogID)
         {
